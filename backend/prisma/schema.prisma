@@ -34,8 +34,9 @@ model User {
 
   // Relationships
   services         Service[]
-  customerBookings Booking[] @relation("CustomerBookings")
-  providerBookings Booking[] @relation("ProviderBookings")
+  customerBookings Booking[]              @relation("CustomerBookings")
+  providerBookings Booking[]              @relation("ProviderBookings")
+  scheduleLocks    ProviderScheduleLock[]
 
   @@map("users")
 }
@@ -87,6 +88,7 @@ model Booking {
   bookingDate DateTime      @db.Date
   startTime   DateTime
   endTime     DateTime
+  totalPrice  Decimal       @db.Decimal(10, 2)
   status      BookingStatus @default(PENDING)
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
@@ -98,8 +100,22 @@ model Booking {
 
   // Indexes to optimize slot lookup, provider schedule checks and concurrency validation
   @@index([providerId, bookingDate, status])
-  @@index([customerId])
+  @@index([customerId, createdAt])
+  @@index([providerId, createdAt])
   @@index([serviceId])
   @@index([startTime, endTime])
+  @@index([status])
   @@map("bookings")
+}
+
+model ProviderScheduleLock {
+  id          Int      @id @default(autoincrement())
+  providerId  Int
+  bookingDate DateTime @db.Date
+  createdAt   DateTime @default(now())
+
+  provider    User     @relation(fields: [providerId], references: [id], onDelete: Cascade)
+
+  @@unique([providerId, bookingDate])
+  @@map("provider_schedule_locks")
 }

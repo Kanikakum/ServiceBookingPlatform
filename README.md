@@ -69,31 +69,36 @@ service-booking-platform/
 
 ---
 
-## 📦 Implemented Modules (Phase 1 & Phase 2)
+## 📦 Implemented Modules (Phase 1, Phase 2 & Phase 3)
 
-1. **Authentication & RBAC Module**:
+1. **Authentication & RBAC Module (Phase 1)**:
    - Customer & Provider registration and login.
    - Secure bcrypt password hashing with 12 salt rounds.
    - JWT token generation & verification (`userId`, `role`).
    - Role-based authorization middleware (`requireRole('CUSTOMER')`, `requireRole('PROVIDER')`).
    - Profile retrieval endpoint (`GET /api/auth/me`).
 
-2. **Category Management & Seeding**:
+2. **Category Management & Service Catalog Module (Phase 2)**:
    - Idempotent Prisma category seeding (`Home Cleaning`, `Plumbing`, `Electrical`, `Beauty & Wellness`, `Appliance Repair`, `Tutoring`, `Fitness`, `Car Wash`).
    - Customer category discovery endpoint (`GET /api/categories`).
-
-3. **Service Management & Public Marketplace Catalog**:
    - Provider Service CRUD (`POST /api/services`, `PUT /api/services/:id`, `DELETE /api/services/:id`).
    - Provider service listing (`GET /api/services/provider/me`).
    - Strict server-side provider ownership verification (403 on tampering).
    - Soft-delete / deactivation pattern (`isActive = false`) to preserve booking historical integrity.
-   - Customer Public Catalog (`GET /api/services`):
-     - Keyword search on `title` and `description`.
-     - Faceted category filtering (`?categoryId=...`).
-     - Min / max price filtering (`?minPrice=...&maxPrice=...`).
-     - Sorting (`sort=newest|oldest|price_asc|price_desc`).
-     - Server-side database pagination (`?page=...&limit=...`).
-   - Inactive service protection (hidden from public catalog).
+   - Customer Public Catalog (`GET /api/services`) with full-text search, category filter, min/max price, sort, and pagination.
+
+3. **Booking System & Concurrency Engine (Phase 3)**:
+   - Advisory availability generator (`GET /api/bookings/availability`) for dynamic daily slots.
+   - ACID Transactional booking creation (`POST /api/bookings`) with pessimistic row locking (`SELECT ... FOR UPDATE` under `ReadCommitted` isolation) guaranteeing zero double-bookings.
+   - Unidirectional state transition engine:
+     - `PENDING` -> `CONFIRMED` (Provider accept: `PATCH /api/bookings/:id/accept`)
+     - `PENDING` -> `REJECTED` (Provider reject: `PATCH /api/bookings/:id/reject`)
+     - `PENDING` / `CONFIRMED` -> `CANCELLED` (Customer cancel: `PATCH /api/bookings/:id/cancel`)
+   - Price snapshotting on booking creation (`totalPrice`), ensuring historical financial accuracy even if service price updates later.
+   - Role-segregated booking listings:
+     - Customer bookings (`GET /api/bookings/customer`)
+     - Provider bookings (`GET /api/bookings/provider`)
+   - 10-parallel request concurrency stress testing verifying exactly 1 booking success (201) and 9 conflict rejections (409).
 
 ---
 
@@ -125,14 +130,17 @@ npm run prisma:seed
 
 ### 3. Run Automated Tests
 ```bash
-# Run all backend tests (Auth + Service tests)
+# Run all backend tests (Auth + Service + Booking tests: 86/86 passing)
 npm run test:backend
 
-# Run Auth suite only
+# Run Auth suite only (24 tests)
 npm run test:auth
 
-# Run Service suite only
+# Run Service suite only (34 tests)
 npm run test:service
+
+# Run Booking & Concurrency suite only (28 tests)
+npm run test:booking
 ```
 
 ### 4. Run Development Servers
@@ -164,6 +172,13 @@ npm run dev
 | `GET` | `/api/services/provider/me` | Provider | List services owned by authenticated provider |
 | `PUT` | `/api/services/:id` | Provider | Update owned service |
 | `DELETE` | `/api/services/:id` | Provider | Deactivate/soft-delete owned service |
+| `GET` | `/api/bookings/availability` | Customer / Provider | Advisory slot availability for date & service |
+| `POST` | `/api/bookings` | Customer | Concurrency-safe booking creation |
+| `GET` | `/api/bookings/customer` | Customer | List customer's own bookings (paginated) |
+| `PATCH` | `/api/bookings/:id/cancel` | Customer | Cancel an active booking |
+| `GET` | `/api/bookings/provider` | Provider | List provider's scheduled bookings (paginated) |
+| `PATCH` | `/api/bookings/:id/accept` | Provider | Accept pending booking (`CONFIRMED`) |
+| `PATCH` | `/api/bookings/:id/reject` | Provider | Reject pending booking (`REJECTED`) |
 
 ---
 

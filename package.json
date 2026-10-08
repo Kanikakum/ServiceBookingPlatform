@@ -10,6 +10,7 @@
     "test:backend": "npm --prefix backend run test",
     "test:auth": "npm --prefix backend run test:auth",
     "test:service": "npm --prefix backend run test:service",
+    "test:booking": "npm --prefix backend run test:booking",
     "build:frontend": "npm --prefix frontend run build",
     "start:frontend": "npm --prefix frontend run start",
     "start:backend": "npm --prefix backend run start",

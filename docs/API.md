@@ -399,3 +399,334 @@ Soft-delete / deactivate a service owned by the authenticated Provider.
   - `401 Unauthorized`: Missing or invalid JWT.
   - `403 Forbidden`: Authenticated user does not own this service.
   - `404 Not Found`: Service not found.
+
+---
+
+## 5. Bookings (`/bookings`)
+
+### State Transition Machine
+Bookings progress through strict unidirectional server-controlled transitions:
+- `PENDING` -> `CONFIRMED` (via `PATCH /api/bookings/:id/accept` by Provider)
+- `PENDING` -> `REJECTED` (via `PATCH /api/bookings/:id/reject` by Provider)
+- `PENDING` / `CONFIRMED` -> `CANCELLED` (via `PATCH /api/bookings/:id/cancel` by Customer)
+- Terminal statuses (`REJECTED`, `CANCELLED`, `COMPLETED`) cannot transition to any other status.
+- Blocking statuses: Only `PENDING` and `CONFIRMED` bookings occupy calendar slots and block provider availability.
+
+---
+
+### `GET /bookings/availability`
+Advisory availability check returning all generated time slots for a service and date.
+
+- **Auth**: `Bearer <JWT>`
+- **Role**: `CUSTOMER` or `PROVIDER`
+- **Query Parameters**:
+  - `serviceId` *(number, required)*: Service ID to check.
+  - `bookingDate` *(string, required)*: Date in `YYYY-MM-DD` format.
+- **Example Request**:
+  `GET /api/bookings/availability?serviceId=1&bookingDate=2026-10-15`
+- **Success Response (`200 OK`)**:
+  ```json
+  {
+    "success": true,
+    "message": "Service availability retrieved successfully",
+    "data": {
+      "serviceId": 1,
+      "providerId": 5,
+      "bookingDate": "2026-10-15",
+      "durationMinutes": 60,
+      "workingHours": "09:00 - 18:00",
+      "slots": [
+        {
+          "startTime": "09:00",
+          "endTime": "10:00",
+          "available": true
+        },
+        {
+          "startTime": "10:00",
+          "endTime": "11:00",
+          "available": false
+        },
+        {
+          "startTime": "11:00",
+          "endTime": "12:00",
+          "available": true
+        }
+      ]
+    }
+  }
+  ```
+- **Errors**:
+  - `400 Bad Request`: Missing or invalid date format (`YYYY-MM-DD`).
+  - `401 Unauthorized`: Missing or invalid JWT.
+  - `404 Not Found`: Service does not exist or is inactive.
+
+---
+
+### `POST /bookings`
+Create a new booking. Executes within a MySQL ACID transaction with exclusive pessimistic locking (`SELECT ... FOR UPDATE`) to guarantee zero double-booking under concurrency.
+
+- **Auth**: `Bearer <JWT>`
+- **Role**: `CUSTOMER` only
+- **Body**:
+  ```json
+  {
+    "serviceId": 1,
+    "bookingDate": "2026-10-15",
+    "startTime": "10:00",
+    "endTime": "11:00"
+  }
+  ```
+  *(Note: `endTime` is optional; if omitted, it is automatically derived as `startTime + service.durationMinutes`).*
+- **Success Response (`201 Created`)**:
+  ```json
+  {
+    "success": true,
+    "message": "Booking created successfully",
+    "data": {
+      "id": 12,
+      "customerId": 3,
+      "providerId": 5,
+      "serviceId": 1,
+      "bookingDate": "2026-10-15",
+      "startTime": "2026-10-15T10:00:00.000Z",
+      "endTime": "2026-10-15T11:00:00.000Z",
+      "totalPrice": 1500,
+      "status": "PENDING",
+      "createdAt": "2026-10-08T11:00:00.000Z",
+      "updatedAt": "2026-10-08T11:00:00.000Z",
+      "service": {
+        "id": 1,
+        "title": "Deluxe Apartment Deep Cleaning",
+        "durationMinutes": 60
+      },
+      "provider": {
+        "id": 5,
+        "name": "Jane Doe",
+        "email": "jane@example.com"
+      },
+      "customer": {
+        "id": 3,
+        "name": "John Smith",
+        "email": "john@example.com"
+      }
+    }
+  }
+  ```
+- **Errors**:
+  - `400 Bad Request`: Appointment slot is in the past, `startTime >= endTime`, or `endTime` duration mismatch.
+  - `401 Unauthorized`: Missing or invalid JWT.
+  - `403 Forbidden`: Authenticated user is not a `CUSTOMER`.
+  - `404 Not Found`: Service not found or inactive.
+  - `409 Conflict`: The requested time slot is occupied by an active booking (`"The selected time slot is no longer available."`).
+
+---
+
+### `GET /bookings/customer`
+Retrieve bookings created by the authenticated customer.
+
+- **Auth**: `Bearer <JWT>`
+- **Role**: `CUSTOMER` only
+- **Query Parameters**:
+  - `status` *(string, optional)*: Filter by `PENDING`, `CONFIRMED`, `REJECTED`, `CANCELLED`, `COMPLETED`.
+  - `bookingDate` *(string, optional)*: Filter by `YYYY-MM-DD`.
+  - `page` *(number, optional)*: Default `1`.
+  - `limit` *(number, optional)*: Default `10`, max `50`.
+- **Success Response (`200 OK`)**:
+  ```json
+  {
+    "success": true,
+    "message": "Customer bookings retrieved successfully",
+    "data": {
+      "items": [
+        {
+          "id": 12,
+          "customerId": 3,
+          "providerId": 5,
+          "serviceId": 1,
+          "bookingDate": "2026-10-15",
+          "startTime": "2026-10-15T10:00:00.000Z",
+          "endTime": "2026-10-15T11:00:00.000Z",
+          "totalPrice": 1500,
+          "status": "PENDING",
+          "createdAt": "2026-10-08T11:00:00.000Z",
+          "updatedAt": "2026-10-08T11:00:00.000Z",
+          "service": {
+            "id": 1,
+            "title": "Deluxe Apartment Deep Cleaning",
+            "durationMinutes": 60
+          },
+          "provider": {
+            "id": 5,
+            "name": "Jane Doe",
+            "email": "jane@example.com"
+          }
+        }
+      ],
+      "pagination": {
+        "page": 1,
+        "limit": 10,
+        "totalItems": 1,
+        "totalPages": 1
+      }
+    }
+  }
+  ```
+
+---
+
+### `PATCH /bookings/:id/cancel`
+Cancel an active booking by the customer who created it.
+
+- **Auth**: `Bearer <JWT>`
+- **Role**: `CUSTOMER` only (must own the booking)
+- **Success Response (`200 OK`)**:
+  ```json
+  {
+    "success": true,
+    "message": "Booking cancelled successfully",
+    "data": {
+      "booking": {
+        "id": 12,
+        "customerId": 3,
+        "providerId": 5,
+        "serviceId": 1,
+        "bookingDate": "2026-10-15",
+        "startTime": "2026-10-15T10:00:00.000Z",
+        "endTime": "2026-10-15T11:00:00.000Z",
+        "totalPrice": 1500,
+        "status": "CANCELLED",
+        "createdAt": "2026-10-08T11:00:00.000Z",
+        "updatedAt": "2026-10-08T11:05:00.000Z"
+      }
+    }
+  }
+  ```
+- **Errors**:
+  - `401 Unauthorized`: Missing or invalid JWT.
+  - `403 Forbidden`: Authenticated customer does not own this booking.
+  - `404 Not Found`: Booking not found.
+  - `409 Conflict`: Booking is already `CANCELLED`, `REJECTED`, or `COMPLETED`.
+
+---
+
+### `GET /bookings/provider`
+Retrieve bookings scheduled for the authenticated service provider.
+
+- **Auth**: `Bearer <JWT>`
+- **Role**: `PROVIDER` only
+- **Query Parameters**:
+  - `status` *(string, optional)*: Filter by status.
+  - `bookingDate` *(string, optional)*: Filter by `YYYY-MM-DD`.
+  - `page` *(number, optional)*: Default `1`.
+  - `limit` *(number, optional)*: Default `10`, max `50`.
+- **Success Response (`200 OK`)**:
+  ```json
+  {
+    "success": true,
+    "message": "Provider bookings retrieved successfully",
+    "data": {
+      "items": [
+        {
+          "id": 12,
+          "customerId": 3,
+          "providerId": 5,
+          "serviceId": 1,
+          "bookingDate": "2026-10-15",
+          "startTime": "2026-10-15T10:00:00.000Z",
+          "endTime": "2026-10-15T11:00:00.000Z",
+          "totalPrice": 1500,
+          "status": "PENDING",
+          "createdAt": "2026-10-08T11:00:00.000Z",
+          "updatedAt": "2026-10-08T11:00:00.000Z",
+          "service": {
+            "id": 1,
+            "title": "Deluxe Apartment Deep Cleaning",
+            "durationMinutes": 60
+          },
+          "customer": {
+            "id": 3,
+            "name": "John Smith",
+            "email": "john@example.com"
+          }
+        }
+      ],
+      "pagination": {
+        "page": 1,
+        "limit": 10,
+        "totalItems": 1,
+        "totalPages": 1
+      }
+    }
+  }
+  ```
+
+---
+
+### `PATCH /bookings/:id/accept`
+Accept a pending booking (`PENDING` -> `CONFIRMED`).
+
+- **Auth**: `Bearer <JWT>`
+- **Role**: `PROVIDER` only (must own the service / booking)
+- **Success Response (`200 OK`)**:
+  ```json
+  {
+    "success": true,
+    "message": "Booking accepted and confirmed successfully",
+    "data": {
+      "booking": {
+        "id": 12,
+        "customerId": 3,
+        "providerId": 5,
+        "serviceId": 1,
+        "bookingDate": "2026-10-15",
+        "startTime": "2026-10-15T10:00:00.000Z",
+        "endTime": "2026-10-15T11:00:00.000Z",
+        "totalPrice": 1500,
+        "status": "CONFIRMED",
+        "createdAt": "2026-10-08T11:00:00.000Z",
+        "updatedAt": "2026-10-08T11:10:00.000Z"
+      }
+    }
+  }
+  ```
+- **Errors**:
+  - `401 Unauthorized`: Missing or invalid JWT.
+  - `403 Forbidden`: Authenticated provider does not own this booking.
+  - `404 Not Found`: Booking not found.
+  - `409 Conflict`: Booking is not in `PENDING` status.
+
+---
+
+### `PATCH /bookings/:id/reject`
+Reject a pending booking (`PENDING` -> `REJECTED`). Automatically releases the reserved time slot.
+
+- **Auth**: `Bearer <JWT>`
+- **Role**: `PROVIDER` only (must own the service / booking)
+- **Success Response (`200 OK`)**:
+  ```json
+  {
+    "success": true,
+    "message": "Booking rejected successfully",
+    "data": {
+      "booking": {
+        "id": 12,
+        "customerId": 3,
+        "providerId": 5,
+        "serviceId": 1,
+        "bookingDate": "2026-10-15",
+        "startTime": "2026-10-15T10:00:00.000Z",
+        "endTime": "2026-10-15T11:00:00.000Z",
+        "totalPrice": 1500,
+        "status": "REJECTED",
+        "createdAt": "2026-10-08T11:00:00.000Z",
+        "updatedAt": "2026-10-08T11:12:00.000Z"
+      }
+    }
+  }
+  ```
+- **Errors**:
+  - `401 Unauthorized`: Missing or invalid JWT.
+  - `403 Forbidden`: Authenticated provider does not own this booking.
+  - `404 Not Found`: Booking not found.
+  - `409 Conflict`: Booking is not in `PENDING` status.
+
