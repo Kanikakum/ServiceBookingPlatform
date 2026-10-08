@@ -10,6 +10,10 @@ export const ROUTES = {
   CUSTOMER_DASHBOARD: '/customer',
   CUSTOMER_BOOKINGS: '/customer/bookings',
   PROVIDER_DASHBOARD: '/provider',
+  PROVIDER_SERVICES: '/provider/services',
+  PROVIDER_SERVICES_NEW: '/provider/services/new',
+  PROVIDER_BOOKINGS: '/provider/bookings',
+  PROVIDER_SCHEDULE: '/provider/schedule',
   UNAUTHORIZED: '/unauthorized',
 };
 

@@ -71,28 +71,74 @@ export default function Navbar() {
 
             {isAuthenticated ? (
               <>
-                <Link
-                  href={dashboardRoute}
-                  className={`text-sm font-medium transition-colors ${
-                    pathname === dashboardRoute
-                      ? 'text-indigo-600 font-semibold'
-                      : 'text-gray-600 hover:text-gray-900'
-                  }`}
-                >
-                  Dashboard
-                </Link>
-
                 {user?.role === 'CUSTOMER' && (
-                  <Link
-                    href={ROUTES.CUSTOMER_BOOKINGS}
-                    className={`text-sm font-medium transition-colors ${
-                      pathname.startsWith(ROUTES.CUSTOMER_BOOKINGS)
-                        ? 'text-indigo-600 font-semibold'
-                        : 'text-gray-600 hover:text-gray-900'
-                    }`}
-                  >
-                    My Bookings
-                  </Link>
+                  <>
+                    <Link
+                      href={ROUTES.CUSTOMER_DASHBOARD}
+                      className={`text-sm font-medium transition-colors ${
+                        pathname === ROUTES.CUSTOMER_DASHBOARD
+                          ? 'text-indigo-600 font-semibold'
+                          : 'text-gray-600 hover:text-gray-900'
+                      }`}
+                    >
+                      Dashboard
+                    </Link>
+                    <Link
+                      href={ROUTES.CUSTOMER_BOOKINGS}
+                      className={`text-sm font-medium transition-colors ${
+                        pathname.startsWith(ROUTES.CUSTOMER_BOOKINGS)
+                          ? 'text-indigo-600 font-semibold'
+                          : 'text-gray-600 hover:text-gray-900'
+                      }`}
+                    >
+                      My Bookings
+                    </Link>
+                  </>
+                )}
+
+                {user?.role === 'PROVIDER' && (
+                  <>
+                    <Link
+                      href={ROUTES.PROVIDER_DASHBOARD}
+                      className={`text-sm font-medium transition-colors ${
+                        pathname === ROUTES.PROVIDER_DASHBOARD
+                          ? 'text-indigo-600 font-semibold'
+                          : 'text-gray-600 hover:text-gray-900'
+                      }`}
+                    >
+                      Dashboard
+                    </Link>
+                    <Link
+                      href={ROUTES.PROVIDER_SERVICES}
+                      className={`text-sm font-medium transition-colors ${
+                        pathname.startsWith(ROUTES.PROVIDER_SERVICES)
+                          ? 'text-indigo-600 font-semibold'
+                          : 'text-gray-600 hover:text-gray-900'
+                      }`}
+                    >
+                      My Services
+                    </Link>
+                    <Link
+                      href={ROUTES.PROVIDER_BOOKINGS}
+                      className={`text-sm font-medium transition-colors ${
+                        pathname.startsWith(ROUTES.PROVIDER_BOOKINGS)
+                          ? 'text-indigo-600 font-semibold'
+                          : 'text-gray-600 hover:text-gray-900'
+                      }`}
+                    >
+                      Booking Requests
+                    </Link>
+                    <Link
+                      href={ROUTES.PROVIDER_SCHEDULE}
+                      className={`text-sm font-medium transition-colors ${
+                        pathname.startsWith(ROUTES.PROVIDER_SCHEDULE)
+                          ? 'text-indigo-600 font-semibold'
+                          : 'text-gray-600 hover:text-gray-900'
+                      }`}
+                    >
+                      Schedule
+                    </Link>
+                  </>
                 )}
 
                 <div className="flex items-center space-x-4 pl-4 border-l border-gray-200">
@@ -175,22 +221,56 @@ export default function Navbar() {
 
           {isAuthenticated ? (
             <>
-              <Link
-                href={dashboardRoute}
-                onClick={() => setMobileMenuOpen(false)}
-                className="block px-3 py-2 rounded-lg text-base font-medium text-indigo-600 bg-indigo-50"
-              >
-                Dashboard ({user?.role})
-              </Link>
-
               {user?.role === 'CUSTOMER' && (
-                <Link
-                  href={ROUTES.CUSTOMER_BOOKINGS}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="block px-3 py-2 rounded-lg text-base font-medium text-gray-700 hover:bg-gray-50"
-                >
-                  My Bookings
-                </Link>
+                <>
+                  <Link
+                    href={ROUTES.CUSTOMER_DASHBOARD}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="block px-3 py-2 rounded-lg text-base font-medium text-indigo-600 bg-indigo-50"
+                  >
+                    Customer Dashboard
+                  </Link>
+                  <Link
+                    href={ROUTES.CUSTOMER_BOOKINGS}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="block px-3 py-2 rounded-lg text-base font-medium text-gray-700 hover:bg-gray-50"
+                  >
+                    My Bookings
+                  </Link>
+                </>
+              )}
+
+              {user?.role === 'PROVIDER' && (
+                <>
+                  <Link
+                    href={ROUTES.PROVIDER_DASHBOARD}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="block px-3 py-2 rounded-lg text-base font-medium text-indigo-600 bg-indigo-50"
+                  >
+                    Provider Dashboard
+                  </Link>
+                  <Link
+                    href={ROUTES.PROVIDER_SERVICES}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="block px-3 py-2 rounded-lg text-base font-medium text-gray-700 hover:bg-gray-50"
+                  >
+                    My Services
+                  </Link>
+                  <Link
+                    href={ROUTES.PROVIDER_BOOKINGS}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="block px-3 py-2 rounded-lg text-base font-medium text-gray-700 hover:bg-gray-50"
+                  >
+                    Booking Requests
+                  </Link>
+                  <Link
+                    href={ROUTES.PROVIDER_SCHEDULE}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="block px-3 py-2 rounded-lg text-base font-medium text-gray-700 hover:bg-gray-50"
+                  >
+                    Schedule
+                  </Link>
+                </>
               )}
               <div className="pt-2 border-t border-gray-100 flex items-center justify-between px-3">
                 <div>
