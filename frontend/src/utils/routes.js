@@ -8,6 +8,7 @@ export const ROUTES = {
   LOGIN: '/login',
   REGISTER: '/register',
   CUSTOMER_DASHBOARD: '/customer',
+  CUSTOMER_BOOKINGS: '/customer/bookings',
   PROVIDER_DASHBOARD: '/provider',
   UNAUTHORIZED: '/unauthorized',
 };

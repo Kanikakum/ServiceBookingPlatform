@@ -82,6 +82,19 @@ export default function Navbar() {
                   Dashboard
                 </Link>
 
+                {user?.role === 'CUSTOMER' && (
+                  <Link
+                    href={ROUTES.CUSTOMER_BOOKINGS}
+                    className={`text-sm font-medium transition-colors ${
+                      pathname.startsWith(ROUTES.CUSTOMER_BOOKINGS)
+                        ? 'text-indigo-600 font-semibold'
+                        : 'text-gray-600 hover:text-gray-900'
+                    }`}
+                  >
+                    My Bookings
+                  </Link>
+                )}
+
                 <div className="flex items-center space-x-4 pl-4 border-l border-gray-200">
                   <div className="text-right">
                     <p className="text-sm font-semibold text-gray-900 leading-tight">
@@ -169,6 +182,16 @@ export default function Navbar() {
               >
                 Dashboard ({user?.role})
               </Link>
+
+              {user?.role === 'CUSTOMER' && (
+                <Link
+                  href={ROUTES.CUSTOMER_BOOKINGS}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block px-3 py-2 rounded-lg text-base font-medium text-gray-700 hover:bg-gray-50"
+                >
+                  My Bookings
+                </Link>
+              )}
               <div className="pt-2 border-t border-gray-100 flex items-center justify-between px-3">
                 <div>
                   <p className="text-sm font-semibold text-gray-900">{user?.name}</p>

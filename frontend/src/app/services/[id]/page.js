@@ -8,6 +8,7 @@ import { useAuth } from '../../../context/AuthContext';
 import { ROUTES } from '../../../utils/routes';
 import LoadingSpinner from '../../../components/common/LoadingSpinner';
 import Button from '../../../components/common/Button';
+import BookingForm from '../../../components/bookings/BookingForm';
 
 /**
  * Format duration in minutes into a human-friendly string.
@@ -201,7 +202,7 @@ function ServiceDetailContent({ params }) {
               </div>
             </div>
 
-            {/* Booking Call-To-Action Box */}
+            {/* Booking Section */}
             <div className="pt-6 border-t border-gray-100">
               {!isAuthenticated ? (
                 <div className="rounded-2xl bg-indigo-50/70 border border-indigo-100 p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
@@ -221,46 +222,22 @@ function ServiceDetailContent({ params }) {
                   </Button>
                 </div>
               ) : isCustomer ? (
-                <div className="rounded-2xl bg-indigo-50/70 border border-indigo-100 p-6">
-                  <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div className="bg-white rounded-2xl border border-gray-200/90 p-6 sm:p-8 shadow-xs">
+                  <div className="mb-6 flex items-center justify-between border-b border-gray-100 pb-4">
                     <div>
                       <div className="flex items-center space-x-2">
                         <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-bold bg-emerald-100 text-emerald-800">
-                          Customer
+                          Customer Booking
                         </span>
-                        <h3 className="text-base font-bold text-gray-900">Book Appointment</h3>
+                        <h2 className="text-lg font-bold text-gray-900">Schedule Your Appointment</h2>
                       </div>
-                      <p className="text-xs text-gray-600 mt-1">
-                        Locked price of <strong className="text-gray-900">{formatPrice(service.price)}</strong> with{' '}
-                        {formatDuration(service.durationMinutes)} service duration.
+                      <p className="text-xs text-gray-500 mt-0.5">
+                        Select an available date and time slot to lock in your appointment with concurrency protection.
                       </p>
                     </div>
-
-                    <Button
-                      variant="primary"
-                      size="lg"
-                      onClick={() => setShowBookingNotice(true)}
-                      className="w-full sm:w-auto shadow-md"
-                    >
-                      Book This Service
-                    </Button>
                   </div>
 
-                  {showBookingNotice && (
-                    <div className="mt-4 p-4 rounded-xl bg-white border border-indigo-200 text-xs text-indigo-900 shadow-2xs">
-                      <div className="flex items-start">
-                        <svg className="w-5 h-5 text-indigo-600 mr-2 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        <div>
-                          <strong className="font-semibold block text-sm">Booking Calendar Coming in Phase 4C</strong>
-                          <p className="mt-0.5 text-gray-600">
-                            The live slot picker wired to <code className="bg-indigo-50 px-1.5 py-0.5 rounded font-mono text-indigo-800">/api/bookings/availability</code> and the ACID concurrency booking engine will be integrated in Phase 4C!
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  )}
+                  <BookingForm service={service} />
                 </div>
               ) : isProvider ? (
                 <div className="rounded-2xl bg-amber-50 border border-amber-200 p-4 text-xs text-amber-800 flex items-center space-x-3">
