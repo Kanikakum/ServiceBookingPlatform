@@ -8,9 +8,13 @@ const notFoundHandler = require('./middleware/notFoundHandler');
 const app = express();
 
 // Security and utility middleware
+const allowedOrigins = typeof config.corsOrigin === 'string' && config.corsOrigin.includes(',')
+  ? config.corsOrigin.split(',').map((origin) => origin.trim())
+  : config.corsOrigin;
+
 app.use(
   cors({
-    origin: config.corsOrigin,
+    origin: allowedOrigins,
     credentials: true,
   })
 );
