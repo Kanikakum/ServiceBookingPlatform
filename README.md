@@ -10,14 +10,13 @@ A production-ready, high-concurrency **Service Booking Platform** engineered for
 - **Backend**: Node.js, Express.js (Clean Layered Architecture)
 - **Database**: MySQL 8.0+
 - **ORM**: Prisma ORM
-- **Authentication**: JWT & bcrypt password hashing
+- **Validation**: Zod
+- **Authentication**: JWT & bcryptjs password hashing
 - **Concurrency & Transaction Engine**: ACID Transactions with Row Locking & Serializable Isolation
 
 ---
 
-## 🏛 Planned Architecture
-
-The repository follows a clean monorepo structure:
+## 🏛 Architecture & Project Layout
 
 ```
 service-booking-platform/
@@ -32,29 +31,35 @@ service-booking-platform/
 │   └── package.json
 │
 ├── backend/                # Express.js REST API server
-│   ├── prisma/             # Prisma database schema & migrations
-│   │   └── schema.prisma
+│   ├── prisma/             # Prisma database schema, seeds & migrations
+│   │   ├── schema.prisma
+│   │   ├── seed.js
+│   │   └── migrations/
 │   ├── src/
 │   │   ├── config/         # Environment variables & constants
 │   │   ├── controllers/    # Thin HTTP request & response handlers
-│   │   ├── middleware/     # Auth, RBAC, and error handlers
+│   │   ├── middleware/     # Auth, RBAC, validation, and error handlers
 │   │   ├── routes/         # Express API routes
 │   │   ├── services/       # Domain business logic & transactions
 │   │   ├── repositories/   # Prisma query layer
-│   │   ├── validators/     # Input schema validation
+│   │   ├── validators/     # Zod schema validation
 │   │   ├── utils/          # Standard response and error helpers
 │   │   ├── db/             # Prisma client singleton
 │   │   ├── app.js          # Express app configuration
 │   │   └── server.js       # Server bootstrap and graceful shutdown
+│   ├── tests/              # Automated backend test suites
+│   │   ├── auth.test.js
+│   │   └── service.test.js
 │   └── package.json
 │
 ├── database/               # Database design, SQL DDL reference, and indexing strategy
 │   ├── README.md
 │   └── schema.sql
 │
-├── docs/                   # Architectural blueprints & concurrency specifications
+├── docs/                   # Architectural blueprints & API specifications
 │   ├── ARCHITECTURE.md     # Full architectural documentation
-│   └── BOOKING-CONCURRENCY.md # Double-booking & race condition prevention blueprint
+│   ├── BOOKING-CONCURRENCY.md # Double-booking & race condition prevention blueprint
+│   └── API.md              # REST API contract & endpoints documentation
 │
 ├── .gitignore
 ├── .env.example
@@ -64,23 +69,31 @@ service-booking-platform/
 
 ---
 
-## 📦 Planned Modules
+## 📦 Implemented Modules (Phase 1 & Phase 2)
 
 1. **Authentication & RBAC Module**:
    - Customer & Provider registration and login.
-   - Secure bcrypt password hashing.
-   - JWT token generation & verification.
-   - Role-based authorization middleware.
-2. **Services Catalog Module**:
-   - Provider CRUD for services (duration, pricing, descriptions).
-   - Customer search, category filtering, price filtering, sorting, and pagination.
-3. **Double-Booking & Slot Concurrency Engine**:
-   - Deterministic availability and slot schedule computation.
-   - ACID transaction locking preventing simultaneous overlapping bookings.
-   - Source-of-truth backend validation returning `HTTP 409 Conflict` on race conditions.
-4. **Dashboards & Portals**:
-   - Customer dashboard: booking history, upcoming appointment management.
-   - Provider dashboard: schedule view, appointment acceptance/rejection flow.
+   - Secure bcrypt password hashing with 12 salt rounds.
+   - JWT token generation & verification (`userId`, `role`).
+   - Role-based authorization middleware (`requireRole('CUSTOMER')`, `requireRole('PROVIDER')`).
+   - Profile retrieval endpoint (`GET /api/auth/me`).
+
+2. **Category Management & Seeding**:
+   - Idempotent Prisma category seeding (`Home Cleaning`, `Plumbing`, `Electrical`, `Beauty & Wellness`, `Appliance Repair`, `Tutoring`, `Fitness`, `Car Wash`).
+   - Customer category discovery endpoint (`GET /api/categories`).
+
+3. **Service Management & Public Marketplace Catalog**:
+   - Provider Service CRUD (`POST /api/services`, `PUT /api/services/:id`, `DELETE /api/services/:id`).
+   - Provider service listing (`GET /api/services/provider/me`).
+   - Strict server-side provider ownership verification (403 on tampering).
+   - Soft-delete / deactivation pattern (`isActive = false`) to preserve booking historical integrity.
+   - Customer Public Catalog (`GET /api/services`):
+     - Keyword search on `title` and `description`.
+     - Faceted category filtering (`?categoryId=...`).
+     - Min / max price filtering (`?minPrice=...&maxPrice=...`).
+     - Sorting (`sort=newest|oldest|price_asc|price_desc`).
+     - Server-side database pagination (`?page=...&limit=...`).
+   - Inactive service protection (hidden from public catalog).
 
 ---
 
@@ -91,7 +104,7 @@ service-booking-platform/
 - npm (v9+)
 - MySQL (v8.0+)
 
-### 1. Clone & Configure Environment Variables
+### 1. Configure Environment Variables
 Copy `.env.example` to `backend/.env` and `frontend/.env.local`:
 ```bash
 cp .env.example backend/.env
@@ -101,51 +114,62 @@ cp frontend/.env.example frontend/.env.local
 Configure your MySQL connection string in `backend/.env`:
 ```env
 DATABASE_URL="mysql://root:password@localhost:3306/service_booking_db"
+JWT_SECRET="your-super-secret-jwt-key-min-32-chars-long"
 ```
 
-### 2. Generate Prisma Client
+### 2. Run Migrations & Seed Categories
 ```bash
-npm run prisma:generate
+npm run prisma:migrate
+npm run prisma:seed
 ```
 
-### 3. Run Development Servers Independently
-
-To run the **Backend API** (port 5000):
+### 3. Run Automated Tests
 ```bash
+# Run all backend tests (Auth + Service tests)
+npm run test:backend
+
+# Run Auth suite only
+npm run test:auth
+
+# Run Service suite only
+npm run test:service
+```
+
+### 4. Run Development Servers
+```bash
+# Run Backend API (Port 5000)
 npm run dev:backend
-```
 
-To run the **Frontend Application** (port 3000):
-```bash
+# Run Frontend Application (Port 3000)
 npm run dev:frontend
-```
 
-Or run both concurrently:
-```bash
+# Or run both concurrently
 npm run dev
 ```
 
 ---
 
-## 🔍 Health Check Endpoint
+## 🔍 REST API Summary
 
-Verify the backend is running by querying:
-```http
-GET http://localhost:5000/api/health
-```
-
-Expected response:
-```json
-{
-  "success": true,
-  "message": "Service Booking API is running"
-}
-```
+| Method | Endpoint | Access | Purpose |
+| :--- | :--- | :--- | :--- |
+| `GET` | `/api/health` | Public | System health check |
+| `POST` | `/api/auth/register` | Public | Register Customer or Provider |
+| `POST` | `/api/auth/login` | Public | Authenticate user, receive JWT |
+| `GET` | `/api/auth/me` | Authenticated | Retrieve authenticated user profile |
+| `GET` | `/api/categories` | Public | List all available service categories |
+| `GET` | `/api/services` | Public | Public catalog search, filter, sort & paginate |
+| `GET` | `/api/services/:id` | Public | Retrieve single service details |
+| `POST` | `/api/services` | Provider | Create a new service |
+| `GET` | `/api/services/provider/me` | Provider | List services owned by authenticated provider |
+| `PUT` | `/api/services/:id` | Provider | Update owned service |
+| `DELETE` | `/api/services/:id` | Provider | Deactivate/soft-delete owned service |
 
 ---
 
 ## 📖 Detailed Documentation
 
+- [REST API Specifications](docs/API.md)
 - [System Architecture Blueprint](docs/ARCHITECTURE.md)
 - [Booking Concurrency & Race Condition Prevention Strategy](docs/BOOKING-CONCURRENCY.md)
 - [Database Schema & Indexing Specifications](database/README.md)

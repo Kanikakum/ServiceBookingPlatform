@@ -70,10 +70,12 @@ model Service {
   category        Category  @relation(fields: [categoryId], references: [id])
   bookings        Booking[]
 
-  @@index([providerId])
+  // Indexes to optimize catalog queries, category/price filters, sorting, and provider retrieval
+  @@index([isActive, categoryId])
+  @@index([isActive, price])
+  @@index([isActive, createdAt])
+  @@index([providerId, createdAt])
   @@index([categoryId])
-  @@index([price])
-  @@index([isActive])
   @@map("services")
 }
 

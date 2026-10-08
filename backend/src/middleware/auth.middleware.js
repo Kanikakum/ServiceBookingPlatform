@@ -40,6 +40,35 @@ const requireAuth = (req, res, next) => {
 };
 
 /**
+ * Optional authentication middleware. Populates req.user if a valid token exists,
+ * but allows unauthenticated requests to proceed.
+ */
+const optionalAuth = (req, res, next) => {
+  const authHeader = req.headers.authorization;
+
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return next();
+  }
+
+  const token = authHeader.split(' ')[1];
+  if (!token) {
+    return next();
+  }
+
+  try {
+    const decoded = verifyToken(token);
+    req.user = {
+      id: decoded.userId,
+      role: decoded.role,
+    };
+  } catch (error) {
+    // Silently ignore invalid token in optional auth
+  }
+
+  next();
+};
+
+/**
  * Higher-order middleware to enforce Role-Based Access Control (RBAC).
  * @param  {...string} allowedRoles - e.g. 'CUSTOMER', 'PROVIDER'
  */
@@ -62,5 +91,6 @@ const requireRole = (...allowedRoles) => (req, res, next) => {
 
 module.exports = {
   requireAuth,
+  optionalAuth,
   requireRole,
 };
