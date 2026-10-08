@@ -58,6 +58,17 @@ export default function Navbar() {
               Home
             </Link>
 
+            <Link
+              href={ROUTES.SERVICES}
+              className={`text-sm font-medium transition-colors ${
+                pathname.startsWith(ROUTES.SERVICES)
+                  ? 'text-indigo-600 font-semibold'
+                  : 'text-gray-600 hover:text-gray-900'
+              }`}
+            >
+              Services
+            </Link>
+
             {isAuthenticated ? (
               <>
                 <Link
@@ -139,6 +150,14 @@ export default function Navbar() {
             className="block px-3 py-2 rounded-lg text-base font-medium text-gray-700 hover:bg-gray-50"
           >
             Home
+          </Link>
+
+          <Link
+            href={ROUTES.SERVICES}
+            onClick={() => setMobileMenuOpen(false)}
+            className="block px-3 py-2 rounded-lg text-base font-medium text-gray-700 hover:bg-gray-50"
+          >
+            Services
           </Link>
 
           {isAuthenticated ? (

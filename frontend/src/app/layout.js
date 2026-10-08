@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "../context/AuthContext";
@@ -27,7 +28,9 @@ export default function RootLayout({ children }) {
     >
       <body className="min-h-full flex flex-col bg-gray-50 text-gray-900 selection:bg-indigo-500 selection:text-white">
         <AuthProvider>
-          <Navbar />
+          <Suspense fallback={<div className="h-16 bg-white border-b border-gray-100" />}>
+            <Navbar />
+          </Suspense>
           <main className="flex-1 flex flex-col">{children}</main>
           <footer className="bg-white border-t border-gray-200 py-6 text-center text-xs text-gray-500">
             <p>© 2026 ServiceBooking Platform. All rights reserved.</p>

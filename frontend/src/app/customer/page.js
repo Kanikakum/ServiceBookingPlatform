@@ -44,9 +44,9 @@ export default function CustomerDashboardPage() {
             </div>
           </div>
 
-          {/* Phase 4B Placeholder Notice */}
-          <div className="rounded-2xl border-2 border-dashed border-indigo-200 bg-indigo-50/40 p-8 sm:p-12 text-center">
-            <div className="w-14 h-14 rounded-2xl bg-indigo-100 text-indigo-600 flex items-center justify-center mx-auto mb-4">
+          {/* Marketplace Discovery Banner */}
+          <div className="rounded-2xl border border-indigo-100 bg-gradient-to-br from-indigo-50/70 to-white p-8 sm:p-10 text-center shadow-2xs">
+            <div className="w-14 h-14 rounded-2xl bg-indigo-600 text-white flex items-center justify-center mx-auto mb-4 shadow-md shadow-indigo-200">
               <svg
                 className="w-7 h-7"
                 fill="none"
@@ -61,25 +61,21 @@ export default function CustomerDashboardPage() {
                 />
               </svg>
             </div>
-            <h2 className="text-xl font-bold text-gray-900">Service Marketplace (Phase 4B)</h2>
+            <h2 className="text-xl font-bold text-gray-900">Explore Local Service Marketplace</h2>
             <p className="mt-2 text-sm text-gray-600 max-w-xl mx-auto leading-relaxed">
-              You are securely authenticated as a Customer! The interactive service catalog, live time-slot
-              availability picker, and booking checkout flow will be integrated in Phase 4B.
+              Find top-rated home cleaning, plumbing, repairs, and tutoring with transparent pricing and instant
+              booking capability.
             </p>
 
-            <div className="mt-6 flex flex-wrap items-center justify-center gap-2 text-xs text-indigo-700">
-              <span className="bg-white px-3 py-1.5 rounded-lg border border-indigo-100 shadow-2xs font-medium">
-                ✓ Full-Text Search
-              </span>
-              <span className="bg-white px-3 py-1.5 rounded-lg border border-indigo-100 shadow-2xs font-medium">
-                ✓ Category & Price Filters
-              </span>
-              <span className="bg-white px-3 py-1.5 rounded-lg border border-indigo-100 shadow-2xs font-medium">
-                ✓ Live Availability Calendar
-              </span>
-              <span className="bg-white px-3 py-1.5 rounded-lg border border-indigo-100 shadow-2xs font-medium">
-                ✓ Concurrency Protected Booking
-              </span>
+            <div className="mt-6 flex flex-wrap items-center justify-center gap-4">
+              <Button
+                variant="primary"
+                size="lg"
+                onClick={() => window.location.assign('/services')}
+                className="px-6 py-2.5 font-semibold"
+              >
+                Browse All Services →
+              </Button>
             </div>
           </div>
         </div>
