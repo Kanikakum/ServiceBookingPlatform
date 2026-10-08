@@ -1,0 +1,103 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  CUSTOMER
+  PROVIDER
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  REJECTED
+  CANCELLED
+  COMPLETED
+}
+
+model User {
+  id           Int       @id @default(autoincrement())
+  name         String
+  email        String    @unique
+  passwordHash String
+  role         Role      @default(CUSTOMER)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  // Relationships
+  services         Service[]
+  customerBookings Booking[] @relation("CustomerBookings")
+  providerBookings Booking[] @relation("ProviderBookings")
+
+  @@map("users")
+}
+
+model Category {
+  id        Int       @id @default(autoincrement())
+  name      String    @unique
+  slug      String    @unique
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  // Relationships
+  services  Service[]
+
+  @@map("categories")
+}
+
+model Service {
+  id              Int       @id @default(autoincrement())
+  providerId      Int
+  categoryId      Int
+  title           String
+  description     String    @db.Text
+  price           Decimal   @db.Decimal(10, 2)
+  durationMinutes Int
+  isActive        Boolean   @default(true)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  // Relationships
+  provider        User      @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  category        Category  @relation(fields: [categoryId], references: [id])
+  bookings        Booking[]
+
+  @@index([providerId])
+  @@index([categoryId])
+  @@index([price])
+  @@index([isActive])
+  @@map("services")
+}
+
+model Booking {
+  id          Int           @id @default(autoincrement())
+  customerId  Int
+  providerId  Int
+  serviceId   Int
+  bookingDate DateTime      @db.Date
+  startTime   DateTime
+  endTime     DateTime
+  status      BookingStatus @default(PENDING)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  // Relationships
+  customer    User          @relation("CustomerBookings", fields: [customerId], references: [id], onDelete: Restrict)
+  provider    User          @relation("ProviderBookings", fields: [providerId], references: [id], onDelete: Restrict)
+  service     Service       @relation(fields: [serviceId], references: [id], onDelete: Restrict)
+
+  // Indexes to optimize slot lookup, provider schedule checks and concurrency validation
+  @@index([providerId, bookingDate, status])
+  @@index([customerId])
+  @@index([serviceId])
+  @@index([startTime, endTime])
+  @@map("bookings")
+}
