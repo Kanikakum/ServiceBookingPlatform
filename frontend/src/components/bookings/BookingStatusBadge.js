@@ -1,48 +1,49 @@
 import React from 'react';
 
 /**
- * Reusable badge displaying booking status with accessible semantic colors and labels.
+ * Reusable badge displaying booking status with monochrome black/white/gray visual states.
+ * Status values are not changed — only presentation.
  */
 export default function BookingStatusBadge({ status, className = '' }) {
   const config = {
     PENDING: {
       label: 'Awaiting Provider',
-      classes: 'bg-amber-50 text-amber-800 border-amber-200',
-      dot: 'bg-amber-500',
+      classes: 'bg-[#F7F7F7] text-[#666666] border-[#E5E5E5]',
+      dot: 'bg-[#666666]',
     },
     CONFIRMED: {
       label: 'Confirmed',
-      classes: 'bg-emerald-50 text-emerald-800 border-emerald-200',
-      dot: 'bg-emerald-500',
+      classes: 'bg-[#111111] text-white border-[#111111]',
+      dot: 'bg-white',
     },
     REJECTED: {
       label: 'Declined',
-      classes: 'bg-rose-50 text-rose-800 border-rose-200',
-      dot: 'bg-rose-500',
+      classes: 'bg-[#1F1F1F] text-[#E5E5E5] border-[#1F1F1F]',
+      dot: 'bg-[#E5E5E5]',
     },
     CANCELLED: {
       label: 'Cancelled',
-      classes: 'bg-gray-100 text-gray-700 border-gray-200',
-      dot: 'bg-gray-400',
+      classes: 'bg-[#F7F7F7] text-[#666666] border-[#E5E5E5]',
+      dot: 'bg-[#666666]',
     },
     COMPLETED: {
       label: 'Completed',
-      classes: 'bg-indigo-50 text-indigo-800 border-indigo-200',
-      dot: 'bg-indigo-500',
+      classes: 'bg-[#111111] text-white border-[#111111]',
+      dot: 'bg-[#E5E5E5]',
     },
   };
 
   const statusConfig = config[status] || {
     label: status || 'Unknown',
-    classes: 'bg-gray-100 text-gray-700 border-gray-200',
-    dot: 'bg-gray-400',
+    classes: 'bg-[#F7F7F7] text-[#666666] border-[#E5E5E5]',
+    dot: 'bg-[#666666]',
   };
 
   return (
     <span
-      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold border ${statusConfig.classes} ${className}`}
+      className={`inline-flex items-center px-2 py-0.5 rounded-sm text-xs font-semibold border ${statusConfig.classes} ${className}`}
     >
-      <span className={`w-1.5 h-1.5 rounded-full mr-1.5 ${statusConfig.dot}`} />
+      <span className={`w-1.5 h-1.5 rounded-[1px] mr-1.5 ${statusConfig.dot}`} aria-hidden="true" />
       {statusConfig.label}
     </span>
   );

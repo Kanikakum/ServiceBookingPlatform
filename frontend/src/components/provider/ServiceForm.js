@@ -38,8 +38,8 @@ export default function ServiceForm({ initialData = null, isEdit = false }) {
         if (isMounted && Array.isArray(catList)) {
           setCategories(catList);
           // If creating and no category chosen yet, default to first category
-          if (!isEdit && !formData.categoryId && catList.length > 0) {
-            setFormData((prev) => ({ ...prev, categoryId: catList[0].id.toString() }));
+          if (!isEdit && catList.length > 0) {
+            setFormData((prev) => (prev.categoryId ? prev : { ...prev, categoryId: catList[0].id.toString() }));
           }
         }
       } catch (err) {
@@ -147,7 +147,7 @@ export default function ServiceForm({ initialData = null, isEdit = false }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6 max-w-2xl bg-white p-6 sm:p-8 rounded-3xl border border-gray-200/90 shadow-2xs">
+    <form onSubmit={handleSubmit} className="space-y-6 max-w-2xl bg-white p-6 sm:p-8 rounded-sm border border-[#E5E5E5]">
       {apiError && (
         <ErrorMessage
           message={apiError}
@@ -176,8 +176,8 @@ export default function ServiceForm({ initialData = null, isEdit = false }) {
 
       {/* Category Dropdown */}
       <div>
-        <label htmlFor="categoryId" className="block text-sm font-medium text-gray-700 mb-1.5">
-          Service Category <span className="text-red-500">*</span>
+        <label htmlFor="categoryId" className="block text-sm font-medium text-[#111111] mb-1.5">
+          Service Category <span className="text-[#666666]" aria-hidden="true">*</span>
         </label>
         <select
           id="categoryId"
@@ -185,10 +185,10 @@ export default function ServiceForm({ initialData = null, isEdit = false }) {
           value={formData.categoryId}
           onChange={handleChange}
           disabled={isSubmitting}
-          className={`block w-full rounded-xl border px-3.5 py-2.5 text-sm text-gray-900 shadow-2xs focus:outline-none focus:ring-2 disabled:bg-gray-50 ${
+          className={`block w-full rounded-sm border px-3.5 py-2.5 text-sm text-[#111111] bg-white focus:outline-none focus-visible:ring-1 disabled:bg-[#F7F7F7] disabled:text-[#666666] transition-colors ${
             errors.categoryId
-              ? 'border-red-300 focus:border-red-500 focus:ring-red-200 text-red-900'
-              : 'border-gray-300 focus:border-indigo-500 focus:ring-indigo-100'
+              ? 'border-[#1F1F1F] focus-visible:ring-black'
+              : 'border-[#E5E5E5] hover:border-[#666666] focus-visible:ring-black focus-visible:border-[#111111]'
           }`}
         >
           <option value="" disabled>
@@ -200,13 +200,13 @@ export default function ServiceForm({ initialData = null, isEdit = false }) {
             </option>
           ))}
         </select>
-        {errors.categoryId && <p className="mt-1.5 text-xs text-red-600">{errors.categoryId}</p>}
+        {errors.categoryId && <p className="mt-1.5 text-xs text-[#1F1F1F] font-medium">{errors.categoryId}</p>}
       </div>
 
       {/* Description */}
       <div>
-        <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1.5">
-          Service Description <span className="text-red-500">*</span>
+        <label htmlFor="description" className="block text-sm font-medium text-[#111111] mb-1.5">
+          Service Description <span className="text-[#666666]" aria-hidden="true">*</span>
         </label>
         <textarea
           id="description"
@@ -217,14 +217,14 @@ export default function ServiceForm({ initialData = null, isEdit = false }) {
           value={formData.description}
           onChange={handleChange}
           disabled={isSubmitting}
-          className={`block w-full rounded-xl border px-3.5 py-2.5 text-sm text-gray-900 shadow-2xs focus:outline-none focus:ring-2 disabled:bg-gray-50 ${
+          className={`block w-full rounded-sm border px-3.5 py-2.5 text-sm text-[#111111] bg-white focus:outline-none focus-visible:ring-1 disabled:bg-[#F7F7F7] disabled:text-[#666666] transition-colors placeholder-[#666666] ${
             errors.description
-              ? 'border-red-300 focus:border-red-500 focus:ring-red-200 text-red-900'
-              : 'border-gray-300 focus:border-indigo-500 focus:ring-indigo-100'
+              ? 'border-[#1F1F1F] focus-visible:ring-black'
+              : 'border-[#E5E5E5] hover:border-[#666666] focus-visible:ring-black focus-visible:border-[#111111]'
           }`}
         />
-        {errors.description && <p className="mt-1.5 text-xs text-red-600">{errors.description}</p>}
-        <p className="mt-1 text-xs text-gray-400">Min 10 characters.</p>
+        {errors.description && <p className="mt-1.5 text-xs text-[#1F1F1F] font-medium">{errors.description}</p>}
+        <p className="mt-1 text-xs text-[#666666]">Min 10 characters.</p>
       </div>
 
       {/* Pricing & Duration Grid */}
@@ -263,7 +263,7 @@ export default function ServiceForm({ initialData = null, isEdit = false }) {
       </div>
 
       {/* Form Action Buttons */}
-      <div className="pt-4 border-t border-gray-100 flex items-center justify-end space-x-3">
+      <div className="pt-4 border-t border-[#E5E5E5] flex items-center justify-end space-x-3">
         <Link href="/provider/services">
           <Button variant="outline" size="md" disabled={isSubmitting}>
             Cancel

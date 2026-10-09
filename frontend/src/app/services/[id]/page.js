@@ -86,9 +86,9 @@ function ServiceDetailContent({ params }) {
   if (error || !service) {
     return (
       <div className="flex-1 py-16 px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center">
-        <div className="max-w-md w-full text-center bg-white p-8 rounded-2xl shadow-sm border border-gray-200">
-          <div className="w-14 h-14 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center mx-auto mb-4">
-            <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <div className="max-w-md w-full text-center bg-white p-8 rounded-sm border border-[#E5E5E5]">
+          <div className="w-14 h-14 rounded-sm bg-[#F7F7F7] border border-[#E5E5E5] text-[#111111] flex items-center justify-center mx-auto mb-4">
+            <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -97,8 +97,8 @@ function ServiceDetailContent({ params }) {
               />
             </svg>
           </div>
-          <h2 className="text-xl font-bold text-gray-900">Service Not Found</h2>
-          <p className="mt-2 text-sm text-gray-600">
+          <h2 className="text-xl font-bold text-[#111111]">Service Not Found</h2>
+          <p className="mt-2 text-sm text-[#666666]">
             {error === 'Service not found'
               ? 'The requested service may have been deactivated or does not exist.'
               : error || 'Unable to load service details.'}
@@ -119,13 +119,13 @@ function ServiceDetailContent({ params }) {
   const isProvider = isAuthenticated && user?.role === 'PROVIDER';
 
   return (
-    <div className="flex-1 py-10 bg-gray-50">
+    <div className="flex-1 py-10 bg-[#F7F7F7]">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Back navigation */}
         <div className="mb-6">
           <Link
             href="/services"
-            className="inline-flex items-center text-xs font-semibold text-gray-500 hover:text-indigo-600 transition-colors"
+            className="inline-flex items-center text-xs font-semibold text-[#666666] hover:text-[#111111] transition-colors"
           >
             <svg
               className="w-4 h-4 mr-1.5"
@@ -133,30 +133,30 @@ function ServiceDetailContent({ params }) {
               viewBox="0 0 24 24"
               stroke="currentColor"
             >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M15 19l-7-7 7-7" />
             </svg>
             Back to Marketplace
           </Link>
         </div>
 
         {/* Main Service Card */}
-        <div className="bg-white rounded-3xl border border-gray-200/90 shadow-sm overflow-hidden">
+        <div className="bg-white rounded-sm border border-[#E5E5E5] overflow-hidden">
           {/* Header Banner */}
-          <div className="bg-gradient-to-r from-indigo-900 via-indigo-800 to-indigo-950 p-6 sm:p-10 text-white">
+          <div className="bg-[#111111] p-6 sm:p-10 text-white">
             <div className="flex flex-wrap items-center gap-2 mb-4">
-              <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-white/20 text-white backdrop-blur-sm border border-white/30">
+              <span className="inline-flex items-center px-3 py-1 rounded-sm text-xs font-semibold bg-white/10 text-white border border-white/20">
                 {service.category?.name || 'Service Category'}
               </span>
-              <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/20 text-emerald-200 border border-emerald-400/30">
-                Active & Verified
+              <span className="inline-flex items-center px-3 py-1 rounded-sm text-xs font-semibold bg-white/10 text-gray-300 border border-white/20">
+                Active &amp; Verified
               </span>
             </div>
 
-            <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight">{service.title}</h1>
+            <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-white">{service.title}</h1>
 
-            <p className="mt-2 text-indigo-200 text-sm flex items-center">
-              <svg className="w-4 h-4 mr-1.5 opacity-80" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+            <p className="mt-2 text-gray-400 text-sm flex items-center">
+              <svg className="w-4 h-4 mr-1.5 opacity-80" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
               </svg>
               Offered by <strong className="text-white ml-1 font-semibold">{service.provider?.name || 'Professional Provider'}</strong>
             </p>
@@ -165,30 +165,30 @@ function ServiceDetailContent({ params }) {
           {/* Body Information */}
           <div className="p-6 sm:p-10 space-y-8">
             {/* Quick Spec Grid */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 p-4 rounded-2xl bg-gray-50 border border-gray-100">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 p-4 rounded-sm bg-[#F7F7F7] border border-[#E5E5E5]">
               <div>
-                <span className="block text-xs uppercase tracking-wider text-gray-400 font-semibold">
+                <span className="block text-xs uppercase tracking-wider text-[#666666] font-semibold">
                   Standard Price
                 </span>
-                <span className="text-2xl font-extrabold text-gray-900 mt-0.5 block">
+                <span className="text-2xl font-extrabold text-[#111111] mt-0.5 block">
                   {formatPrice(service.price)}
                 </span>
               </div>
 
               <div>
-                <span className="block text-xs uppercase tracking-wider text-gray-400 font-semibold">
+                <span className="block text-xs uppercase tracking-wider text-[#666666] font-semibold">
                   Estimated Duration
                 </span>
-                <span className="text-base font-bold text-gray-800 mt-1 block">
+                <span className="text-base font-bold text-[#111111] mt-1 block">
                   {formatDuration(service.durationMinutes)}
                 </span>
               </div>
 
               <div className="col-span-2 sm:col-span-1">
-                <span className="block text-xs uppercase tracking-wider text-gray-400 font-semibold">
+                <span className="block text-xs uppercase tracking-wider text-[#666666] font-semibold">
                   Availability Guarantee
                 </span>
-                <span className="text-sm font-semibold text-emerald-700 mt-1 block">
+                <span className="text-sm font-semibold text-[#111111] mt-1 block">
                   Zero Double-Booking
                 </span>
               </div>
@@ -196,19 +196,19 @@ function ServiceDetailContent({ params }) {
 
             {/* Description Section */}
             <div>
-              <h2 className="text-lg font-bold text-gray-900 mb-3">Service Description</h2>
-              <div className="prose prose-indigo text-sm text-gray-700 leading-relaxed whitespace-pre-line">
+              <h2 className="text-lg font-bold text-[#111111] mb-3">Service Description</h2>
+              <div className="text-sm text-[#666666] leading-relaxed whitespace-pre-line">
                 {service.description}
               </div>
             </div>
 
             {/* Booking Section */}
-            <div className="pt-6 border-t border-gray-100">
+            <div className="pt-6 border-t border-[#E5E5E5]">
               {!isAuthenticated ? (
-                <div className="rounded-2xl bg-indigo-50/70 border border-indigo-100 p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div className="rounded-sm bg-[#F7F7F7] border border-[#E5E5E5] p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
                   <div>
-                    <h3 className="text-base font-bold text-gray-900">Ready to book this service?</h3>
-                    <p className="text-xs text-gray-600 mt-0.5">
+                    <h3 className="text-base font-bold text-[#111111]">Ready to book this service?</h3>
+                    <p className="text-xs text-[#666666] mt-0.5">
                       Sign in with your Customer account to select available dates and time slots.
                     </p>
                   </div>
@@ -216,22 +216,22 @@ function ServiceDetailContent({ params }) {
                     variant="primary"
                     size="lg"
                     onClick={() => router.push(ROUTES.LOGIN)}
-                    className="w-full sm:w-auto whitespace-nowrap"
+                    className="w-full sm:w-auto whitespace-nowrap rounded-sm"
                   >
                     Login to Book
                   </Button>
                 </div>
               ) : isCustomer ? (
-                <div className="bg-white rounded-2xl border border-gray-200/90 p-6 sm:p-8 shadow-xs">
-                  <div className="mb-6 flex items-center justify-between border-b border-gray-100 pb-4">
+                <div className="bg-white rounded-sm border border-[#E5E5E5] p-6 sm:p-8">
+                  <div className="mb-6 flex items-center justify-between border-b border-[#E5E5E5] pb-4">
                     <div>
                       <div className="flex items-center space-x-2">
-                        <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-bold bg-emerald-100 text-emerald-800">
+                        <span className="inline-flex items-center px-2 py-0.5 rounded-sm text-[11px] font-bold bg-[#F7F7F7] text-[#111111] border border-[#E5E5E5]">
                           Customer Booking
                         </span>
-                        <h2 className="text-lg font-bold text-gray-900">Schedule Your Appointment</h2>
+                        <h2 className="text-lg font-bold text-[#111111]">Schedule Your Appointment</h2>
                       </div>
-                      <p className="text-xs text-gray-500 mt-0.5">
+                      <p className="text-xs text-[#666666] mt-0.5">
                         Select an available date and time slot to lock in your appointment with concurrency protection.
                       </p>
                     </div>
@@ -240,12 +240,12 @@ function ServiceDetailContent({ params }) {
                   <BookingForm service={service} />
                 </div>
               ) : isProvider ? (
-                <div className="rounded-2xl bg-amber-50 border border-amber-200 p-4 text-xs text-amber-800 flex items-center space-x-3">
-                  <svg className="w-5 h-5 text-amber-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                <div className="rounded-sm bg-[#F7F7F7] border border-[#E5E5E5] p-4 text-sm text-[#666666] flex items-center space-x-3">
+                  <svg className="w-5 h-5 text-[#666666] flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                   <span>
-                    You are signed in as a <strong>Service Provider</strong>. Customer accounts are required to book appointments.
+                    You are signed in as a <strong className="text-[#111111]">Service Provider</strong>. Customer accounts are required to book appointments.
                   </span>
                 </div>
               ) : null}

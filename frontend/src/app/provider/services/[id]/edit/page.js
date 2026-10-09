@@ -54,12 +54,12 @@ function EditServiceContent({ params }) {
 
   if (error || !service) {
     return (
-      <div className="py-16 text-center max-w-md mx-auto bg-white p-8 rounded-3xl border border-gray-200">
-        <h2 className="text-lg font-bold text-gray-900">Service Not Available</h2>
-        <p className="text-xs text-gray-600 mt-1">{error || 'Unable to load service for editing.'}</p>
+      <div className="py-16 text-center max-w-md mx-auto bg-white p-8 rounded-sm border border-[#E5E5E5]">
+        <h2 className="text-lg font-bold text-[#111111]">Service Not Available</h2>
+        <p className="text-xs text-[#666666] mt-1">{error || 'Unable to load service for editing.'}</p>
         <div className="mt-6">
           <Link href="/provider/services">
-            <Button variant="primary" size="md">
+            <Button variant="primary" size="md" className="rounded-sm">
               ← Return to Services
             </Button>
           </Link>
@@ -74,16 +74,16 @@ function EditServiceContent({ params }) {
       <div className="mb-6">
         <Link
           href="/provider/services"
-          className="inline-flex items-center text-xs font-semibold text-indigo-600 hover:text-indigo-800 transition-colors mb-2"
+          className="inline-flex items-center text-xs font-semibold text-[#666666] hover:text-[#111111] transition-colors mb-2"
         >
           ← Back to Service Listings
         </Link>
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-[#111111] tracking-tight">
           Edit Service Listing
         </h1>
-        <p className="text-xs sm:text-sm text-gray-600 mt-1">
+        <p className="text-xs sm:text-sm text-[#666666] mt-1">
           Update service information, adjust pricing, or change duration for{' '}
-          <strong className="text-gray-900 font-semibold">{service.title}</strong>.
+          <strong className="text-[#111111] font-semibold">{service.title}</strong>.
         </p>
       </div>
 
@@ -95,7 +95,7 @@ function EditServiceContent({ params }) {
 export default function EditServicePage(props) {
   return (
     <AuthGuard allowedRoles={['PROVIDER']}>
-      <div className="flex-1 py-10 bg-gray-50">
+      <div className="flex-1 py-10 bg-[#F7F7F7]">
         <Suspense
           fallback={
             <div className="py-24 flex flex-col items-center justify-center">

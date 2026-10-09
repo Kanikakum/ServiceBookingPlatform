@@ -49,7 +49,7 @@ export default function BookingForm({ service }) {
         setIsLoadingAvailability(false);
       }
     },
-    [service?.id]
+    [service]
   );
 
   /**
@@ -140,15 +140,16 @@ export default function BookingForm({ service }) {
           ref={conflictAlertRef}
           tabIndex={-1}
           role="alert"
-          className="rounded-2xl border border-amber-300 bg-amber-50 p-4 text-amber-900 shadow-2xs flex items-start space-x-3"
+          className="rounded-sm border border-[#111111] bg-[#F7F7F7] p-4 text-[#111111] flex items-start space-x-3"
         >
           <div className="flex-shrink-0 mt-0.5">
             <svg
-              className="w-5 h-5 text-amber-600"
+              className="w-5 h-5 text-[#111111]"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
-              strokeWidth={2}
+              strokeWidth={1.75}
+              aria-hidden="true"
             >
               <path
                 strokeLinecap="round"
@@ -164,7 +165,7 @@ export default function BookingForm({ service }) {
           <button
             type="button"
             onClick={() => setConflictNotice(null)}
-            className="text-amber-500 hover:text-amber-700"
+            className="text-[#666666] hover:text-[#111111] focus:outline-none focus-visible:ring-1 focus-visible:ring-black rounded-sm"
             aria-label="Dismiss conflict notice"
           >
             ✕
@@ -215,9 +216,9 @@ export default function BookingForm({ service }) {
             onClick={handleConfirmBooking}
             isLoading={isSubmitting}
             disabled={isSubmitting || !selectedSlot}
-            className="w-full font-bold shadow-md hover:shadow-lg transition-all py-3.5"
+            className="w-full font-bold py-3.5"
           >
-            Confirm & Book Appointment →
+            Confirm &amp; Book Appointment →
           </Button>
         </div>
       )}

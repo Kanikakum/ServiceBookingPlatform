@@ -59,6 +59,7 @@ CREATE TABLE IF NOT EXISTS `bookings` (
   `bookingDate` DATE NOT NULL,
   `startTime` DATETIME(3) NOT NULL,
   `endTime` DATETIME(3) NOT NULL,
+  `totalPrice` DECIMAL(10, 2) NOT NULL,
   `status` ENUM('PENDING', 'CONFIRMED', 'REJECTED', 'CANCELLED', 'COMPLETED') NOT NULL DEFAULT 'PENDING',
   `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
   `updatedAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
@@ -66,7 +67,20 @@ CREATE TABLE IF NOT EXISTS `bookings` (
   CONSTRAINT `fk_bookings_provider` FOREIGN KEY (`providerId`) REFERENCES `users` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
   CONSTRAINT `fk_bookings_service` FOREIGN KEY (`serviceId`) REFERENCES `services` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
   INDEX `idx_bookings_provider_date_status` (`providerId`, `bookingDate`, `status`),
-  INDEX `idx_bookings_customerId` (`customerId`),
+  INDEX `idx_bookings_customerId_createdAt` (`customerId`, `createdAt`),
+  INDEX `idx_bookings_providerId_createdAt` (`providerId`, `createdAt`),
   INDEX `idx_bookings_serviceId` (`serviceId`),
-  INDEX `idx_bookings_time_range` (`startTime`, `endTime`)
+  INDEX `idx_bookings_time_range` (`startTime`, `endTime`),
+  INDEX `idx_bookings_status` (`status`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 5. Provider Schedule Locks Table (Concurrency Lock Support)
+CREATE TABLE IF NOT EXISTS `provider_schedule_locks` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `providerId` INT NOT NULL,
+  `bookingDate` DATE NOT NULL,
+  `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+  CONSTRAINT `fk_locks_provider` FOREIGN KEY (`providerId`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  UNIQUE KEY `uk_provider_date_lock` (`providerId`, `bookingDate`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+

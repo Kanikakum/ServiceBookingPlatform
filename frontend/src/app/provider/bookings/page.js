@@ -158,30 +158,30 @@ export default function ProviderBookingsPage() {
 
   return (
     <AuthGuard allowedRoles={['PROVIDER']}>
-      <div className="flex-1 py-10 bg-gray-50">
+      <div className="flex-1 py-10 bg-[#F7F7F7]">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
-          <div className="mb-8 sm:flex sm:items-center sm:justify-between border-b border-gray-200/80 pb-6">
+          <div className="mb-8 sm:flex sm:items-center sm:justify-between border-b border-[#E5E5E5] pb-6">
             <div>
               <div className="flex items-center space-x-2 mb-1">
                 <Link
                   href={ROUTES.PROVIDER_DASHBOARD}
-                  className="text-xs font-semibold text-indigo-600 hover:text-indigo-800"
+                  className="text-xs font-semibold text-[#666666] hover:text-[#111111]"
                 >
                   ← Provider Dashboard
                 </Link>
               </div>
-              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight">
+              <h1 className="text-2xl sm:text-3xl font-bold text-[#111111] tracking-tight">
                 Customer Booking Requests
               </h1>
-              <p className="text-xs sm:text-sm text-gray-600 mt-1">
+              <p className="text-xs sm:text-sm text-[#666666] mt-1">
                 Review incoming appointment requests, accept bookings into your schedule, or decline conflicts.
               </p>
             </div>
 
             <div className="mt-4 sm:mt-0">
               <Link href="/provider/schedule">
-                <Button variant="outline" size="md" className="font-semibold">
+                <Button variant="outline" size="md" className="font-semibold rounded-sm border-[#E5E5E5] text-[#111111] hover:bg-[#F7F7F7]">
                   View Work Schedule →
                 </Button>
               </Link>
@@ -190,9 +190,9 @@ export default function ProviderBookingsPage() {
 
           {/* Success Banner */}
           {actionSuccessMessage && (
-            <div className="mb-6 rounded-xl bg-emerald-50 border border-emerald-200 p-4 text-xs sm:text-sm text-emerald-800 flex items-center justify-between">
+            <div className="mb-6 rounded-sm bg-[#F7F7F7] border border-[#111111] p-4 text-xs sm:text-sm text-[#111111] flex items-center justify-between">
               <div className="flex items-center space-x-2">
-                <svg className="w-5 h-5 text-emerald-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <svg className="w-5 h-5 text-[#111111] flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                 </svg>
                 <span>{actionSuccessMessage}</span>
@@ -200,7 +200,7 @@ export default function ProviderBookingsPage() {
               <button
                 type="button"
                 onClick={() => setActionSuccessMessage(null)}
-                className="text-emerald-600 hover:text-emerald-800"
+                className="text-[#666666] hover:text-[#111111]"
               >
                 ✕
               </button>
@@ -209,9 +209,9 @@ export default function ProviderBookingsPage() {
 
           {/* Error Banner */}
           {actionErrorMessage && (
-            <div className="mb-6 rounded-xl bg-red-50 border border-red-200 p-4 text-xs sm:text-sm text-red-800 flex items-center justify-between">
+            <div className="mb-6 rounded-sm bg-[#F7F7F7] border border-[#111111] p-4 text-xs sm:text-sm text-[#111111] flex items-center justify-between">
               <div className="flex items-center space-x-2">
-                <svg className="w-5 h-5 text-red-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <svg className="w-5 h-5 text-[#111111] flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
                 </svg>
                 <span>{actionErrorMessage}</span>
@@ -219,7 +219,7 @@ export default function ProviderBookingsPage() {
               <button
                 type="button"
                 onClick={() => setActionErrorMessage(null)}
-                className="text-red-600 hover:text-red-800"
+                className="text-[#666666] hover:text-[#111111]"
               >
                 ✕
               </button>
@@ -235,10 +235,10 @@ export default function ProviderBookingsPage() {
                   key={tab.value || 'ALL'}
                   type="button"
                   onClick={() => handleStatusChange(tab.value)}
-                  className={`px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all duration-150 cursor-pointer ${
+                  className={`px-4 py-2 rounded-sm text-xs font-semibold whitespace-nowrap transition-all duration-150 cursor-pointer ${
                     isSelected
-                      ? 'bg-indigo-600 text-white shadow-xs'
-                      : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'
+                      ? 'bg-[#111111] text-white border border-[#111111]'
+                      : 'bg-white text-[#666666] hover:text-[#111111] hover:bg-[#F7F7F7] border border-[#E5E5E5]'
                   }`}
                 >
                   {tab.label}
@@ -251,34 +251,34 @@ export default function ProviderBookingsPage() {
           {isLoading ? (
             <div className="py-20 flex flex-col items-center justify-center">
               <LoadingSpinner size="lg" label="Loading booking requests..." />
-              <p className="mt-3 text-sm text-gray-500 font-medium">Fetching customer requests...</p>
+              <p className="mt-3 text-sm text-[#666666] font-medium">Fetching customer requests...</p>
             </div>
           ) : error ? (
-            <div className="bg-red-50 border border-red-200 rounded-2xl p-8 text-center max-w-lg mx-auto">
-              <h3 className="text-base font-bold text-red-900">Error Loading Requests</h3>
-              <p className="mt-1 text-sm text-red-700">{error}</p>
-              <Button variant="outline" size="sm" onClick={fetchBookings} className="mt-4">
+            <div className="bg-[#F7F7F7] border border-[#111111] rounded-sm p-8 text-center max-w-lg mx-auto">
+              <h3 className="text-base font-bold text-[#111111]">Error Loading Requests</h3>
+              <p className="mt-1 text-sm text-[#666666]">{error}</p>
+              <Button variant="outline" size="sm" onClick={fetchBookings} className="mt-4 rounded-sm">
                 Try Again
               </Button>
             </div>
           ) : bookings.length === 0 ? (
-            <div className="bg-white rounded-3xl border border-gray-200 p-12 text-center max-w-xl mx-auto shadow-2xs">
-              <div className="w-16 h-16 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center mx-auto mb-4">
+            <div className="bg-white rounded-sm border border-[#E5E5E5] p-12 text-center max-w-xl mx-auto">
+              <div className="w-16 h-16 rounded-sm bg-[#F7F7F7] border border-[#E5E5E5] text-[#111111] flex items-center justify-center mx-auto mb-4">
                 <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                 </svg>
               </div>
-              <h2 className="text-lg font-bold text-gray-900">
+              <h2 className="text-lg font-bold text-[#111111]">
                 {statusFilter ? `No ${statusFilter.toLowerCase()} bookings found` : 'No booking requests received yet'}
               </h2>
-              <p className="mt-2 text-sm text-gray-500 leading-relaxed">
+              <p className="mt-2 text-sm text-[#666666] leading-relaxed">
                 {statusFilter
                   ? 'There are no booking requests currently matching this status filter.'
                   : 'When customers book your services from the marketplace catalog, their requests will appear here for your review.'}
               </p>
               {statusFilter && (
                 <div className="mt-6">
-                  <Button variant="outline" size="md" onClick={() => handleStatusChange('')}>
+                  <Button variant="outline" size="md" onClick={() => handleStatusChange('')} className="rounded-sm border-[#E5E5E5]">
                     View All Bookings
                   </Button>
                 </div>
@@ -294,47 +294,47 @@ export default function ProviderBookingsPage() {
                 return (
                   <div
                     key={booking.id}
-                    className="bg-white rounded-2xl border border-gray-200/90 p-5 sm:p-6 shadow-2xs hover:shadow-xs transition-shadow flex flex-col md:flex-row md:items-center md:justify-between gap-4"
+                    className="bg-white rounded-sm border border-[#E5E5E5] p-5 sm:p-6 hover:border-[#111111] transition-colors flex flex-col md:flex-row md:items-center md:justify-between gap-4"
                   >
                     {/* Left Details */}
                     <div className="space-y-2 flex-1">
                       <div className="flex flex-wrap items-center gap-2">
-                        <span className="text-xs font-mono font-bold text-gray-500 bg-gray-100 px-2 py-0.5 rounded">
+                        <span className="text-xs font-mono font-bold text-[#111111] bg-[#F7F7F7] border border-[#E5E5E5] px-2 py-0.5 rounded-sm">
                           #{booking.id}
                         </span>
                         <BookingStatusBadge status={booking.status} />
-                        <span className="text-xs text-gray-400">•</span>
-                        <span className="text-xs font-semibold text-gray-700">
+                        <span className="text-xs text-[#666666]">•</span>
+                        <span className="text-xs font-semibold text-[#111111]">
                           {booking.bookingDate}
                         </span>
-                        <span className="text-xs text-gray-500">
+                        <span className="text-xs text-[#666666]">
                           ({formatTimeRange(booking.startTime, booking.endTime)})
                         </span>
                       </div>
 
-                      <h3 className="text-lg font-bold text-gray-900">
+                      <h3 className="text-lg font-bold text-[#111111]">
                         {booking.service?.title || 'Service Appointment'}
                       </h3>
 
-                      <div className="flex flex-wrap items-center gap-4 text-xs text-gray-600">
+                      <div className="flex flex-wrap items-center gap-4 text-xs text-[#666666]">
                         <span className="flex items-center">
-                          <svg className="w-3.5 h-3.5 mr-1 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                          <svg className="w-3.5 h-3.5 mr-1 text-[#666666]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                           </svg>
-                          Customer: <strong className="text-gray-900 font-semibold ml-1">{booking.customer?.name || 'Customer'}</strong>
+                          Customer: <strong className="text-[#111111] font-semibold ml-1">{booking.customer?.name || 'Customer'}</strong>
                           {booking.customer?.email && (
-                            <span className="text-gray-400 ml-1">({booking.customer.email})</span>
+                            <span className="text-[#666666] ml-1">({booking.customer.email})</span>
                           )}
                         </span>
                         <span>•</span>
                         <span>
-                          Payout: <strong className="text-gray-900 font-bold">₹{Number(booking.totalPrice).toLocaleString('en-IN')}</strong>
+                          Payout: <strong className="text-[#111111] font-bold">₹{Number(booking.totalPrice).toLocaleString('en-IN')}</strong>
                         </span>
                       </div>
                     </div>
 
                     {/* Right Actions */}
-                    <div className="flex items-center space-x-2.5 pt-3 md:pt-0 border-t md:border-t-0 border-gray-100 justify-end">
+                    <div className="flex items-center space-x-2.5 pt-3 md:pt-0 border-t md:border-t-0 border-[#E5E5E5] justify-end">
                       {isPending ? (
                         <>
                           <Button
@@ -345,7 +345,7 @@ export default function ProviderBookingsPage() {
                               setRejectModalBooking(booking);
                               setRejectError(null);
                             }}
-                            className="text-xs font-semibold text-rose-600 border-rose-200 hover:bg-rose-50"
+                            className="text-xs font-semibold rounded-sm border-[#E5E5E5] text-[#666666] hover:text-[#111111] hover:bg-[#F7F7F7]"
                           >
                             Decline
                           </Button>
@@ -356,13 +356,13 @@ export default function ProviderBookingsPage() {
                             isLoading={isProcessing}
                             disabled={Boolean(acceptingId)}
                             onClick={() => handleAcceptBooking(booking.id)}
-                            className="text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white shadow-2xs"
+                            className="text-xs font-semibold rounded-sm bg-[#111111] text-white hover:bg-black"
                           >
                             Accept Booking
                           </Button>
                         </>
                       ) : (
-                        <span className="text-xs text-gray-400 font-medium italic">
+                        <span className="text-xs text-[#666666] font-medium italic">
                           No further actions available
                         </span>
                       )}
@@ -373,16 +373,17 @@ export default function ProviderBookingsPage() {
 
               {/* Pagination */}
               {pagination.totalPages > 1 && (
-                <div className="mt-8 flex items-center justify-between border-t border-gray-200 pt-6">
+                <div className="mt-8 flex items-center justify-between border-t border-[#E5E5E5] pt-6">
                   <Button
                     variant="outline"
                     size="sm"
                     disabled={page <= 1}
                     onClick={() => setPage(page - 1)}
+                    className="rounded-sm border-[#E5E5E5]"
                   >
                     ← Previous
                   </Button>
-                  <span className="text-xs font-medium text-gray-600">
+                  <span className="text-xs font-medium text-[#666666]">
                     Page {pagination.page} of {pagination.totalPages}
                   </span>
                   <Button
@@ -390,6 +391,7 @@ export default function ProviderBookingsPage() {
                     size="sm"
                     disabled={page >= pagination.totalPages}
                     onClick={() => setPage(page + 1)}
+                    className="rounded-sm border-[#E5E5E5]"
                   >
                     Next →
                   </Button>

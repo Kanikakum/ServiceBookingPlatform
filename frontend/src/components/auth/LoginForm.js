@@ -77,7 +77,7 @@ export default function LoginForm() {
 
   return (
     <div className="w-full max-w-md mx-auto">
-      <div className="bg-white py-8 px-6 sm:px-10 rounded-2xl shadow-xl border border-gray-100">
+      <div className="bg-white py-8 px-6 sm:px-10 rounded-sm shadow-sm border border-[#E5E5E5]">
         <div className="mb-6 text-center">
           <h2 className="text-2xl font-bold text-gray-900 tracking-tight">Welcome Back</h2>
           <p className="text-sm text-gray-600 mt-1">
@@ -134,12 +134,12 @@ export default function LoginForm() {
           </div>
         </form>
 
-        <div className="mt-8 pt-6 border-t border-gray-100 text-center">
-          <p className="text-sm text-gray-600">
+        <div className="mt-8 pt-6 border-t border-[#E5E5E5] text-center">
+          <p className="text-sm text-[#666666]">
             Don&apos;t have an account yet?{' '}
             <Link
               href={ROUTES.REGISTER}
-              className="font-medium text-indigo-600 hover:text-indigo-500 transition-colors"
+              className="font-medium text-[#111111] hover:text-black underline transition-colors"
             >
               Create an account
             </Link>

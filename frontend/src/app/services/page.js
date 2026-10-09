@@ -207,7 +207,7 @@ function MarketplaceContent() {
   );
 
   return (
-    <div className="flex-1 py-8 sm:py-12 bg-gray-50">
+    <div className="flex-1 py-8 sm:py-12 bg-[#F7F7F7]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Marketplace Header */}
         <div className="mb-8 text-center sm:text-left sm:flex sm:items-end sm:justify-between border-b border-gray-200/80 pb-6">
@@ -226,7 +226,7 @@ function MarketplaceContent() {
                 variant="ghost"
                 size="sm"
                 onClick={handleClearFilters}
-                className="text-xs text-indigo-600 hover:text-indigo-800"
+                className="text-xs text-[#666666] hover:text-[#111111]"
               >
                 Clear all filters
               </Button>
@@ -235,7 +235,7 @@ function MarketplaceContent() {
         </div>
 
         {/* Search & Filter Toolbar */}
-        <div className="bg-white rounded-2xl border border-gray-200/90 shadow-2xs p-4 sm:p-6 mb-8 space-y-5">
+        <div className="bg-white rounded-sm border border-[#E5E5E5] shadow-xs p-4 sm:p-6 mb-8 space-y-5">
           {/* Top Row: Search Input & Sort Dropdown */}
           <div className="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center justify-between">
             {/* Search Input */}
@@ -256,7 +256,7 @@ function MarketplaceContent() {
                 onChange={handleSearchChange}
                 placeholder="Search services by keyword (e.g. cleaning, plumbing, repair)..."
                 aria-label="Search services"
-                className="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                className="w-full pl-10 pr-4 py-2.5 bg-white border border-[#E5E5E5] rounded-sm text-sm text-[#111111] placeholder-[#666666] focus:outline-none focus-visible:ring-1 focus-visible:ring-black focus-visible:border-[#111111] hover:border-[#666666] transition-colors"
               />
               {searchInput && (
                 <button
@@ -289,7 +289,7 @@ function MarketplaceContent() {
                 value={urlSort}
                 onChange={handleSortChange}
                 aria-label="Sort services"
-                className="bg-gray-50 border border-gray-200 rounded-xl px-3 py-2.5 text-xs sm:text-sm font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white cursor-pointer"
+                className="bg-white border border-[#E5E5E5] rounded-sm px-3 py-2.5 text-xs sm:text-sm font-medium text-[#111111] focus:outline-none focus-visible:ring-1 focus-visible:ring-black focus-visible:border-[#111111] hover:border-[#666666] transition-colors cursor-pointer"
               >
                 <option value="newest">Newest First</option>
                 <option value="oldest">Oldest First</option>
@@ -308,10 +308,10 @@ function MarketplaceContent() {
               <button
                 type="button"
                 onClick={() => handleCategorySelect('')}
-                className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all duration-150 cursor-pointer ${
+                className={`px-3.5 py-1.5 rounded-sm text-xs font-semibold transition-all duration-150 cursor-pointer ${
                   !urlCategoryId
-                    ? 'bg-indigo-600 text-white shadow-xs'
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                    ? 'bg-[#111111] text-white'
+                    : 'bg-white text-[#666666] border border-[#E5E5E5] hover:border-[#1F1F1F] hover:text-[#111111]'
                 }`}
               >
                 All Categories
@@ -324,10 +324,10 @@ function MarketplaceContent() {
                     key={cat.id}
                     type="button"
                     onClick={() => handleCategorySelect(cat.id)}
-                    className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all duration-150 cursor-pointer ${
+                    className={`px-3.5 py-1.5 rounded-sm text-xs font-semibold transition-all duration-150 cursor-pointer ${
                       isSelected
-                        ? 'bg-indigo-600 text-white shadow-xs'
-                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                        ? 'bg-[#111111] text-white'
+                        : 'bg-white text-[#666666] border border-[#E5E5E5] hover:border-[#1F1F1F] hover:text-[#111111]'
                     }`}
                   >
                     {cat.name}
@@ -354,9 +354,9 @@ function MarketplaceContent() {
                 value={minPriceInput}
                 onChange={(e) => setMinPriceInput(e.target.value)}
                 aria-label="Minimum price"
-                className="w-24 px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-lg text-xs text-gray-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-24 px-3 py-1.5 bg-white border border-[#E5E5E5] rounded-sm text-xs text-[#111111] focus:outline-none focus-visible:ring-1 focus-visible:ring-black hover:border-[#666666] transition-colors"
               />
-              <span className="text-gray-400 text-xs">to</span>
+              <span className="text-[#666666] text-xs">to</span>
               <input
                 type="number"
                 min="0"
@@ -365,7 +365,7 @@ function MarketplaceContent() {
                 value={maxPriceInput}
                 onChange={(e) => setMaxPriceInput(e.target.value)}
                 aria-label="Maximum price"
-                className="w-24 px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-lg text-xs text-gray-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-24 px-3 py-1.5 bg-white border border-[#E5E5E5] rounded-sm text-xs text-[#111111] focus:outline-none focus-visible:ring-1 focus-visible:ring-black hover:border-[#666666] transition-colors"
               />
             </div>
             <Button type="submit" variant="secondary" size="sm" className="text-xs font-medium py-1.5">
@@ -394,23 +394,23 @@ function MarketplaceContent() {
             <p className="mt-4 text-sm text-gray-500">Finding available services...</p>
           </div>
         ) : error ? (
-          <div className="bg-red-50 border border-red-200 rounded-2xl p-8 text-center max-w-lg mx-auto">
-            <div className="w-12 h-12 rounded-full bg-red-100 text-red-600 flex items-center justify-center mx-auto mb-3">
-              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          <div className="bg-white border border-[#E5E5E5] rounded-sm p-8 text-center max-w-lg mx-auto">
+            <div className="w-12 h-12 rounded-sm bg-[#F7F7F7] border border-[#E5E5E5] text-[#111111] flex items-center justify-center mx-auto mb-3">
+              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M6 18L18 6M6 6l12 12" />
               </svg>
             </div>
-            <h3 className="text-base font-bold text-red-900">Unable to load services</h3>
-            <p className="mt-1 text-sm text-red-700">{error}</p>
+            <h3 className="text-base font-bold text-[#111111]">Unable to load services</h3>
+            <p className="mt-1 text-sm text-[#666666]">{error}</p>
             <div className="mt-5">
-              <Button variant="outline" size="sm" onClick={fetchServices}>
+              <Button variant="outline" size="sm" onClick={fetchServices} className="rounded-sm border-[#E5E5E5]">
                 Try Again
               </Button>
             </div>
           </div>
         ) : services.length === 0 ? (
-          <div className="bg-white rounded-2xl border border-gray-200 p-12 text-center max-w-xl mx-auto shadow-2xs">
-            <div className="w-14 h-14 rounded-2xl bg-gray-100 text-gray-400 flex items-center justify-center mx-auto mb-4">
+          <div className="bg-white rounded-sm border border-[#E5E5E5] p-12 text-center max-w-xl mx-auto">
+            <div className="w-14 h-14 rounded-sm bg-[#F7F7F7] border border-[#E5E5E5] text-[#111111] flex items-center justify-center mx-auto mb-4">
               <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path
                   strokeLinecap="round"
@@ -420,14 +420,14 @@ function MarketplaceContent() {
                 />
               </svg>
             </div>
-            <h3 className="text-lg font-bold text-gray-900">No services found</h3>
-            <p className="mt-2 text-sm text-gray-500 leading-relaxed">
+            <h3 className="text-lg font-bold text-[#111111]">No services found</h3>
+            <p className="mt-2 text-sm text-[#666666] leading-relaxed">
               We couldn&apos;t find any active services matching your search criteria. Try adjusting your
               filters or search terms.
             </p>
             {hasActiveFilters && (
               <div className="mt-6">
-                <Button variant="primary" size="md" onClick={handleClearFilters}>
+                <Button variant="primary" size="md" onClick={handleClearFilters} className="rounded-sm">
                   Clear All Filters
                 </Button>
               </div>

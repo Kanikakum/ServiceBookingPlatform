@@ -17,15 +17,22 @@ export default function DateSelector({ selectedDate, onDateChange, disabled = fa
   const tomorrowStr = getFormattedDate(1);
   const inTwoDaysStr = getFormattedDate(2);
 
+  const quickBtnClass = (isActive) =>
+    `px-3 py-1.5 rounded-sm text-xs font-semibold transition-all duration-150 cursor-pointer disabled:cursor-not-allowed ${
+      isActive
+        ? 'bg-[#111111] text-white'
+        : 'bg-[#F7F7F7] text-[#666666] hover:bg-[#E5E5E5] hover:text-[#111111] border border-[#E5E5E5]'
+    }`;
+
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between">
-        <label htmlFor="booking-date" className="block text-sm font-semibold text-gray-900">
-          1. Select Appointment Date <span className="text-red-500">*</span>
+        <label htmlFor="booking-date" className="block text-sm font-semibold text-[#111111]">
+          1. Select Appointment Date <span className="text-[#666666]" aria-hidden="true">*</span>
         </label>
         {selectedDate && (
-          <span className="text-xs text-indigo-600 font-medium">
-            Selected: {selectedDate}
+          <span className="text-xs text-[#666666] font-medium">
+            Selected: <strong className="text-[#111111]">{selectedDate}</strong>
           </span>
         )}
       </div>
@@ -41,22 +48,18 @@ export default function DateSelector({ selectedDate, onDateChange, disabled = fa
           disabled={disabled}
           onChange={(e) => onDateChange(e.target.value)}
           aria-label="Select appointment date"
-          className="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 bg-white text-sm text-gray-900 shadow-2xs focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:bg-gray-100 disabled:cursor-not-allowed transition-colors"
+          className="w-full px-3.5 py-2.5 rounded-sm border border-[#E5E5E5] bg-white text-sm text-[#111111] focus:outline-none focus-visible:ring-1 focus-visible:ring-black focus-visible:border-[#111111] disabled:bg-[#F7F7F7] disabled:cursor-not-allowed transition-colors hover:border-[#666666]"
         />
       </div>
 
       {/* Quick Date Shortcut Pills */}
       <div className="flex flex-wrap items-center gap-2">
-        <span className="text-xs text-gray-400 font-medium">Quick select:</span>
+        <span className="text-xs text-[#666666] font-medium">Quick select:</span>
         <button
           type="button"
           disabled={disabled}
           onClick={() => onDateChange(todayStr)}
-          className={`px-3 py-1 rounded-lg text-xs font-semibold transition-all duration-150 cursor-pointer ${
-            selectedDate === todayStr
-              ? 'bg-indigo-600 text-white shadow-xs'
-              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-          }`}
+          className={quickBtnClass(selectedDate === todayStr)}
         >
           Today
         </button>
@@ -64,11 +67,7 @@ export default function DateSelector({ selectedDate, onDateChange, disabled = fa
           type="button"
           disabled={disabled}
           onClick={() => onDateChange(tomorrowStr)}
-          className={`px-3 py-1 rounded-lg text-xs font-semibold transition-all duration-150 cursor-pointer ${
-            selectedDate === tomorrowStr
-              ? 'bg-indigo-600 text-white shadow-xs'
-              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-          }`}
+          className={quickBtnClass(selectedDate === tomorrowStr)}
         >
           Tomorrow
         </button>
@@ -76,11 +75,7 @@ export default function DateSelector({ selectedDate, onDateChange, disabled = fa
           type="button"
           disabled={disabled}
           onClick={() => onDateChange(inTwoDaysStr)}
-          className={`px-3 py-1 rounded-lg text-xs font-semibold transition-all duration-150 cursor-pointer ${
-            selectedDate === inTwoDaysStr
-              ? 'bg-indigo-600 text-white shadow-xs'
-              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-          }`}
+          className={quickBtnClass(selectedDate === inTwoDaysStr)}
         >
           In 2 Days
         </button>

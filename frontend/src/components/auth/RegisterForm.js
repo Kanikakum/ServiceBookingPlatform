@@ -111,7 +111,7 @@ export default function RegisterForm() {
 
   return (
     <div className="w-full max-w-lg mx-auto">
-      <div className="bg-white py-8 px-6 sm:px-10 rounded-2xl shadow-xl border border-gray-100">
+      <div className="bg-white py-8 px-6 sm:px-10 rounded-sm shadow-sm border border-[#E5E5E5]">
         <div className="mb-6 text-center">
           <h2 className="text-2xl font-bold text-gray-900 tracking-tight">Create an Account</h2>
           <p className="text-sm text-gray-600 mt-1">
@@ -133,10 +133,9 @@ export default function RegisterForm() {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4" noValidate>
-          {/* Role Selector */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              I want to join as: <span className="text-red-500">*</span>
+            <label className="block text-sm font-medium text-[#111111] mb-2">
+              I want to join as: <span className="text-[#666666]" aria-hidden="true">*</span>
             </label>
             <div className="grid grid-cols-2 gap-3" role="radiogroup" aria-label="Account type">
               <button
@@ -144,19 +143,19 @@ export default function RegisterForm() {
                 role="radio"
                 aria-checked={formData.role === 'CUSTOMER'}
                 onClick={() => handleRoleSelect('CUSTOMER')}
-                className={`p-3.5 rounded-xl border text-left transition-all duration-150 cursor-pointer ${
+                className={`p-3.5 rounded-sm border text-left transition-all duration-150 cursor-pointer ${
                   formData.role === 'CUSTOMER'
-                    ? 'border-indigo-600 bg-indigo-50/70 ring-2 ring-indigo-500/20'
-                    : 'border-gray-200 hover:border-gray-300 bg-white'
+                    ? 'border-[#111111] bg-[#F7F7F7] ring-1 ring-[#111111]'
+                    : 'border-[#E5E5E5] hover:border-[#666666] bg-white'
                 }`}
               >
                 <div className="flex items-center justify-between mb-1">
-                  <span className="font-semibold text-sm text-gray-900">Customer</span>
+                  <span className="font-semibold text-sm text-[#111111]">Customer</span>
                   <div
                     className={`w-4 h-4 rounded-full border flex items-center justify-center ${
                       formData.role === 'CUSTOMER'
-                        ? 'border-indigo-600 bg-indigo-600'
-                        : 'border-gray-300'
+                        ? 'border-[#111111] bg-[#111111]'
+                        : 'border-[#E5E5E5]'
                     }`}
                   >
                     {formData.role === 'CUSTOMER' && (
@@ -164,7 +163,7 @@ export default function RegisterForm() {
                     )}
                   </div>
                 </div>
-                <p className="text-xs text-gray-500">Book and manage home & local services</p>
+                <p className="text-xs text-[#666666]">Book and manage home &amp; local services</p>
               </button>
 
               <button
@@ -172,19 +171,19 @@ export default function RegisterForm() {
                 role="radio"
                 aria-checked={formData.role === 'PROVIDER'}
                 onClick={() => handleRoleSelect('PROVIDER')}
-                className={`p-3.5 rounded-xl border text-left transition-all duration-150 cursor-pointer ${
+                className={`p-3.5 rounded-sm border text-left transition-all duration-150 cursor-pointer ${
                   formData.role === 'PROVIDER'
-                    ? 'border-indigo-600 bg-indigo-50/70 ring-2 ring-indigo-500/20'
-                    : 'border-gray-200 hover:border-gray-300 bg-white'
+                    ? 'border-[#111111] bg-[#F7F7F7] ring-1 ring-[#111111]'
+                    : 'border-[#E5E5E5] hover:border-[#666666] bg-white'
                 }`}
               >
                 <div className="flex items-center justify-between mb-1">
-                  <span className="font-semibold text-sm text-gray-900">Provider</span>
+                  <span className="font-semibold text-sm text-[#111111]">Provider</span>
                   <div
                     className={`w-4 h-4 rounded-full border flex items-center justify-center ${
                       formData.role === 'PROVIDER'
-                        ? 'border-indigo-600 bg-indigo-600'
-                        : 'border-gray-300'
+                        ? 'border-[#111111] bg-[#111111]'
+                        : 'border-[#E5E5E5]'
                     }`}
                   >
                     {formData.role === 'PROVIDER' && (
@@ -192,10 +191,10 @@ export default function RegisterForm() {
                     )}
                   </div>
                 </div>
-                <p className="text-xs text-gray-500">List services and receive bookings</p>
+                <p className="text-xs text-[#666666]">List services and receive bookings</p>
               </button>
             </div>
-            {errors.role && <p className="mt-1 text-xs text-red-600">{errors.role}</p>}
+            {errors.role && <p className="mt-1 text-xs text-[#1F1F1F] font-medium">{errors.role}</p>}
           </div>
 
           <Input
@@ -255,12 +254,12 @@ export default function RegisterForm() {
           </div>
         </form>
 
-        <div className="mt-8 pt-6 border-t border-gray-100 text-center">
-          <p className="text-sm text-gray-600">
+        <div className="mt-8 pt-6 border-t border-[#E5E5E5] text-center">
+          <p className="text-sm text-[#666666]">
             Already have an account?{' '}
             <Link
               href={ROUTES.LOGIN}
-              className="font-medium text-indigo-600 hover:text-indigo-500 transition-colors"
+              className="font-medium text-[#111111] hover:text-black underline transition-colors"
             >
               Sign In
             </Link>

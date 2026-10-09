@@ -1,33 +1,35 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 import { useAuth } from '../../context/AuthContext';
 import AuthGuard from '../../components/auth/AuthGuard';
 import Button from '../../components/common/Button';
+import { ROUTES } from '../../utils/routes';
 
 export default function CustomerDashboardPage() {
   const { user, logout } = useAuth();
 
   return (
     <AuthGuard allowedRoles={['CUSTOMER']}>
-      <div className="flex-1 py-10">
+      <div className="flex-1 py-10 bg-[#F7F7F7]">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Welcome Card */}
-          <div className="bg-white rounded-2xl border border-gray-200/80 shadow-sm p-6 sm:p-8 mb-8">
+          <div className="bg-white rounded-sm border border-[#E5E5E5] p-6 sm:p-8 mb-8">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div>
                 <div className="flex items-center space-x-3 mb-2">
-                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                  <span className="inline-flex items-center px-2 py-0.5 rounded-sm text-xs font-semibold bg-[#F7F7F7] text-[#111111] border border-[#E5E5E5]">
                     Customer Account
                   </span>
-                  <span className="text-xs text-gray-400">•</span>
-                  <span className="text-xs text-gray-500">ID #{user?.id}</span>
+                  <span className="text-xs text-[#666666]">•</span>
+                  <span className="text-xs text-[#666666]">ID #{user?.id}</span>
                 </div>
-                <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight">
+                <h1 className="text-2xl sm:text-3xl font-bold text-[#111111] tracking-tight">
                   Welcome back, {user?.name}!
                 </h1>
-                <p className="text-sm text-gray-600 mt-1">
-                  Signed in as <span className="font-medium text-gray-900">{user?.email}</span>
+                <p className="text-sm text-[#666666] mt-1">
+                  Signed in as <span className="font-medium text-[#111111]">{user?.email}</span>
                 </p>
               </div>
 
@@ -36,7 +38,7 @@ export default function CustomerDashboardPage() {
                   variant="outline"
                   size="sm"
                   onClick={logout}
-                  className="text-red-600 border-red-200 hover:bg-red-50 hover:border-red-300"
+                  className="rounded-sm text-[#111111] border-[#E5E5E5] hover:bg-[#F7F7F7]"
                 >
                   Log Out
                 </Button>
@@ -44,38 +46,50 @@ export default function CustomerDashboardPage() {
             </div>
           </div>
 
-          {/* Marketplace Discovery Banner */}
-          <div className="rounded-2xl border border-indigo-100 bg-gradient-to-br from-indigo-50/70 to-white p-8 sm:p-10 text-center shadow-2xs">
-            <div className="w-14 h-14 rounded-2xl bg-indigo-600 text-white flex items-center justify-center mx-auto mb-4 shadow-md shadow-indigo-200">
-              <svg
-                className="w-7 h-7"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={1.5}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
-                />
-              </svg>
+          {/* Quick Action Navigation Cards */}
+          <div className="grid sm:grid-cols-2 gap-6 mb-8">
+            {/* Action 1: Browse Services */}
+            <div className="bg-white rounded-sm border border-[#E5E5E5] p-6 flex flex-col justify-between">
+              <div>
+                <div className="w-10 h-10 rounded-sm bg-[#111111] text-white flex items-center justify-center mb-4">
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                </div>
+                <h2 className="text-lg font-bold text-[#111111]">Explore Services</h2>
+                <p className="text-xs text-[#666666] mt-1.5 leading-relaxed">
+                  Discover verified service providers with upfront pricing, live calendar slot checking, and instant booking locks.
+                </p>
+              </div>
+              <div className="mt-6 pt-4 border-t border-[#E5E5E5]">
+                <Link href={ROUTES.SERVICES}>
+                  <Button variant="primary" size="md" className="w-full rounded-sm font-semibold">
+                    Browse Marketplace
+                  </Button>
+                </Link>
+              </div>
             </div>
-            <h2 className="text-xl font-bold text-gray-900">Explore Local Service Marketplace</h2>
-            <p className="mt-2 text-sm text-gray-600 max-w-xl mx-auto leading-relaxed">
-              Find top-rated home cleaning, plumbing, repairs, and tutoring with transparent pricing and instant
-              booking capability.
-            </p>
 
-            <div className="mt-6 flex flex-wrap items-center justify-center gap-4">
-              <Button
-                variant="primary"
-                size="lg"
-                onClick={() => window.location.assign('/services')}
-                className="px-6 py-2.5 font-semibold"
-              >
-                Browse All Services →
-              </Button>
+            {/* Action 2: My Bookings */}
+            <div className="bg-white rounded-sm border border-[#E5E5E5] p-6 flex flex-col justify-between">
+              <div>
+                <div className="w-10 h-10 rounded-sm bg-[#111111] text-white flex items-center justify-center mb-4">
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                </div>
+                <h2 className="text-lg font-bold text-[#111111]">My Bookings</h2>
+                <p className="text-xs text-[#666666] mt-1.5 leading-relaxed">
+                  View your scheduled appointments, inspect booking statuses, see confirmed time slots, and manage cancellations.
+                </p>
+              </div>
+              <div className="mt-6 pt-4 border-t border-[#E5E5E5]">
+                <Link href={ROUTES.CUSTOMER_BOOKINGS}>
+                  <Button variant="outline" size="md" className="w-full rounded-sm font-semibold bg-white">
+                    View Appointments
+                  </Button>
+                </Link>
+              </div>
             </div>
           </div>
         </div>

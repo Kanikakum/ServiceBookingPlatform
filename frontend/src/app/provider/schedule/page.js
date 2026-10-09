@@ -119,20 +119,20 @@ function ScheduleContent() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50/50 py-8 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[#F7F7F7] py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto space-y-8">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <div className="flex items-center space-x-2 text-xs font-semibold uppercase tracking-wider text-indigo-600 mb-1">
+            <div className="flex items-center space-x-2 text-xs font-semibold uppercase tracking-wider text-[#666666] mb-1">
               <span>Provider Portal</span>
               <span>•</span>
               <span>Work Schedule</span>
             </div>
-            <h1 className="text-3xl font-bold text-gray-900 tracking-tight">
+            <h1 className="text-3xl font-bold text-[#111111] tracking-tight">
               Appointment Schedule
             </h1>
-            <p className="mt-1 text-sm text-gray-500">
+            <p className="mt-1 text-sm text-[#666666]">
               Organized chronological agenda of all upcoming and past service sessions.
             </p>
           </div>
@@ -143,15 +143,15 @@ function ScheduleContent() {
               size="sm"
               onClick={fetchSchedule}
               disabled={loading}
-              className="flex items-center space-x-1.5"
+              className="flex items-center space-x-1.5 rounded-sm border-[#E5E5E5] text-[#111111] hover:bg-[#F7F7F7]"
             >
               <svg className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
               </svg>
               <span>Refresh</span>
             </Button>
             <Link href={ROUTES.PROVIDER_BOOKINGS}>
-              <Button variant="primary" size="sm">
+              <Button variant="primary" size="sm" className="rounded-sm">
                 View Requests
               </Button>
             </Link>
@@ -159,7 +159,7 @@ function ScheduleContent() {
         </div>
 
         {/* View Filter Tabs */}
-        <div className="flex items-center space-x-2 border-b border-gray-200 pb-1 overflow-x-auto">
+        <div className="flex items-center space-x-2 border-b border-[#E5E5E5] pb-2 overflow-x-auto">
           {[
             { id: 'UPCOMING', label: 'Upcoming Schedule' },
             { id: 'CONFIRMED', label: 'Confirmed Only' },
@@ -169,10 +169,10 @@ function ScheduleContent() {
             <button
               key={tab.id}
               onClick={() => setViewFilter(tab.id)}
-              className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors whitespace-nowrap ${
+              className={`px-4 py-2 text-xs font-semibold rounded-sm transition-colors whitespace-nowrap cursor-pointer ${
                 viewFilter === tab.id
-                  ? 'bg-indigo-600 text-white shadow-sm'
-                  : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                  ? 'bg-[#111111] text-white border border-[#111111]'
+                  : 'bg-white text-[#666666] hover:text-[#111111] hover:bg-[#F7F7F7] border border-[#E5E5E5]'
               }`}
             >
               {tab.label}
@@ -182,34 +182,34 @@ function ScheduleContent() {
 
         {/* Main Content Area */}
         {loading ? (
-          <div className="bg-white rounded-2xl border border-gray-100 p-12 text-center shadow-sm">
-            <div className="inline-block animate-spin rounded-full h-8 w-8 border-4 border-indigo-600 border-t-transparent mb-4"></div>
-            <p className="text-gray-500 font-medium">Loading schedule timeline...</p>
+          <div className="bg-white rounded-sm border border-[#E5E5E5] p-12 text-center">
+            <LoadingSpinner size="lg" label="Loading schedule timeline..." />
+            <p className="text-[#666666] text-xs font-medium mt-3">Loading schedule timeline...</p>
           </div>
         ) : error ? (
-          <div className="bg-red-50 border border-red-200 rounded-2xl p-6 text-center">
-            <p className="text-sm font-medium text-red-800 mb-3">{error}</p>
-            <Button variant="outline" size="sm" onClick={fetchSchedule}>
+          <div className="bg-[#F7F7F7] border border-[#111111] rounded-sm p-6 text-center">
+            <p className="text-sm font-medium text-[#111111] mb-3">{error}</p>
+            <Button variant="outline" size="sm" onClick={fetchSchedule} className="rounded-sm">
               Try Again
             </Button>
           </div>
         ) : Object.keys(groupedBookings).length === 0 ? (
-          <div className="bg-white rounded-2xl border border-dashed border-gray-300 p-12 text-center shadow-sm">
-            <div className="w-12 h-12 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center mx-auto mb-4">
+          <div className="bg-white rounded-sm border border-[#E5E5E5] p-12 text-center">
+            <div className="w-12 h-12 rounded-sm bg-[#F7F7F7] border border-[#E5E5E5] text-[#111111] flex items-center justify-center mx-auto mb-4">
               <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
               </svg>
             </div>
-            <h3 className="text-lg font-bold text-gray-900 mb-1">
+            <h3 className="text-lg font-bold text-[#111111] mb-1">
               No appointments found
             </h3>
-            <p className="text-sm text-gray-500 max-w-md mx-auto mb-6">
+            <p className="text-sm text-[#666666] max-w-md mx-auto mb-6">
               {viewFilter === 'UPCOMING'
                 ? 'You have no upcoming confirmed or pending appointments scheduled.'
                 : `No appointments found matching the "${viewFilter.toLowerCase()}" filter.`}
             </p>
             <Link href={ROUTES.PROVIDER_BOOKINGS}>
-              <Button variant="primary" size="sm">
+              <Button variant="primary" size="sm" className="rounded-sm">
                 Check Booking Requests
               </Button>
             </Link>
@@ -220,11 +220,11 @@ function ScheduleContent() {
               <div key={dateStr} className="space-y-3">
                 {/* Date Header */}
                 <div className="flex items-center space-x-3">
-                  <div className="w-3 h-3 rounded-full bg-indigo-600 ring-4 ring-indigo-100"></div>
-                  <h2 className="text-lg font-bold text-gray-900 tracking-tight">
+                  <div className="w-2.5 h-2.5 rounded-full bg-[#111111] ring-2 ring-[#E5E5E5]"></div>
+                  <h2 className="text-base font-bold text-[#111111] tracking-tight">
                     {formatDateHeader(dateStr)}
                   </h2>
-                  <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-gray-100 text-gray-600">
+                  <span className="text-xs font-semibold px-2 py-0.5 rounded-sm bg-[#F7F7F7] border border-[#E5E5E5] text-[#111111]">
                     {dayBookings.length} session{dayBookings.length > 1 ? 's' : ''}
                   </span>
                 </div>
@@ -234,27 +234,23 @@ function ScheduleContent() {
                   {dayBookings.map((booking) => (
                     <div
                       key={booking.id}
-                      className="bg-white rounded-xl border border-gray-100 p-5 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden flex flex-col justify-between"
+                      className="bg-white rounded-sm border border-[#E5E5E5] p-5 hover:border-[#111111] transition-colors relative overflow-hidden flex flex-col justify-between"
                     >
                       {/* Status bar highlight */}
                       <div
                         className={`absolute top-0 left-0 right-0 h-1 ${
                           booking.status === 'CONFIRMED'
-                            ? 'bg-emerald-500'
-                            : booking.status === 'PENDING'
-                            ? 'bg-amber-500'
-                            : booking.status === 'COMPLETED'
-                            ? 'bg-blue-500'
-                            : 'bg-gray-300'
+                            ? 'bg-[#111111]'
+                            : 'bg-[#E5E5E5]'
                         }`}
                       />
 
                       <div>
                         {/* Top row: Time and Status */}
                         <div className="flex items-center justify-between gap-2 mb-3">
-                          <div className="flex items-center space-x-1.5 text-sm font-bold text-gray-900">
-                            <svg className="w-4 h-4 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          <div className="flex items-center space-x-1.5 text-sm font-bold text-[#111111]">
+                            <svg className="w-4 h-4 text-[#111111]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
                             <span>
                               {booking.startTime} - {booking.endTime}
@@ -264,31 +260,31 @@ function ScheduleContent() {
                         </div>
 
                         {/* Service Title */}
-                        <h3 className="text-base font-bold text-gray-900 mb-1">
+                        <h3 className="text-base font-bold text-[#111111] mb-1">
                           {booking.service?.title || 'Service Session'}
                         </h3>
 
                         {/* Customer Info */}
-                        <div className="flex items-center space-x-2 text-xs text-gray-600 mb-4">
-                          <span className="font-semibold text-gray-800">
+                        <div className="flex items-center space-x-2 text-xs text-[#666666] mb-4">
+                          <span className="font-semibold text-[#111111]">
                             Customer:
                           </span>
                           <span>{booking.customer?.name || 'Customer'}</span>
                           {booking.customer?.email && (
                             <>
                               <span>•</span>
-                              <span className="text-gray-500">{booking.customer.email}</span>
+                              <span className="text-[#666666]">{booking.customer.email}</span>
                             </>
                           )}
                         </div>
                       </div>
 
                       {/* Bottom row: Price & Duration info */}
-                      <div className="pt-3 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500">
+                      <div className="pt-3 border-t border-[#E5E5E5] flex items-center justify-between text-xs text-[#666666]">
                         <span>
-                          Duration: <strong className="text-gray-900">{booking.service?.duration || 60} mins</strong>
+                          Duration: <strong className="text-[#111111]">{booking.service?.duration || 60} mins</strong>
                         </span>
-                        <span className="text-base font-bold text-gray-900">
+                        <span className="text-base font-bold text-[#111111]">
                           ₹{Number(booking.totalPrice || 0).toLocaleString('en-IN')}
                         </span>
                       </div>
@@ -309,7 +305,7 @@ export default function ProviderSchedulePage() {
     <AuthGuard allowedRoles={['PROVIDER']}>
       <Suspense
         fallback={
-          <div className="min-h-screen bg-gray-50/50 py-16 flex items-center justify-center">
+          <div className="min-h-screen bg-[#F7F7F7] py-16 flex items-center justify-center">
             <LoadingSpinner size="lg" label="Loading schedule..." />
           </div>
         }

@@ -2,6 +2,7 @@ import React, { forwardRef } from 'react';
 
 /**
  * Reusable accessible input component with label, error display, and focus styling.
+ * Black & white design system.
  */
 const Input = forwardRef(function Input(
   {
@@ -29,10 +30,10 @@ const Input = forwardRef(function Input(
       {label && (
         <label
           htmlFor={inputId}
-          className="block text-sm font-medium text-gray-700 mb-1.5"
+          className="block text-sm font-medium text-[#111111] mb-1.5"
         >
           {label}
-          {required && <span className="text-red-500 ml-1" aria-hidden="true">*</span>}
+          {required && <span className="text-[#666666] ml-1" aria-hidden="true">*</span>}
         </label>
       )}
 
@@ -47,21 +48,22 @@ const Input = forwardRef(function Input(
           autoComplete={autoComplete}
           aria-invalid={error ? 'true' : 'false'}
           aria-describedby={[errorId, helperId].filter(Boolean).join(' ') || undefined}
-          className={`block w-full rounded-lg border px-3.5 py-2.5 text-sm text-gray-900 shadow-sm transition-colors duration-150 focus:outline-none focus:ring-2 disabled:bg-gray-50 disabled:text-gray-500 disabled:cursor-not-allowed ${
+          className={`block w-full rounded-sm border px-3.5 py-2.5 text-sm text-[#111111] bg-white transition-colors duration-150 focus:outline-none focus-visible:ring-1 focus-visible:ring-black disabled:bg-[#F7F7F7] disabled:text-[#666666] disabled:cursor-not-allowed placeholder-[#666666] ${
             error
-              ? 'border-red-300 focus:border-red-500 focus:ring-red-200 text-red-900 placeholder-red-300'
-              : 'border-gray-300 hover:border-gray-400 focus:border-indigo-500 focus:ring-indigo-100 placeholder-gray-400'
+              ? 'border-[#1F1F1F] focus-visible:border-black focus-visible:ring-black'
+              : 'border-[#E5E5E5] hover:border-[#666666] focus-visible:border-black'
           }`}
           {...props}
         />
       </div>
 
       {error && (
-        <p id={errorId} className="mt-1.5 text-xs text-red-600 flex items-center">
+        <p id={errorId} className="mt-1.5 text-xs text-[#1F1F1F] flex items-center" role="alert">
           <svg
-            className="w-3.5 h-3.5 mr-1 flex-shrink-0 text-red-500"
+            className="w-3.5 h-3.5 mr-1 flex-shrink-0 text-[#1F1F1F]"
             fill="currentColor"
             viewBox="0 0 20 20"
+            aria-hidden="true"
           >
             <path
               fillRule="evenodd"
@@ -74,7 +76,7 @@ const Input = forwardRef(function Input(
       )}
 
       {helperText && !error && (
-        <p id={helperId} className="mt-1.5 text-xs text-gray-500">
+        <p id={helperId} className="mt-1.5 text-xs text-[#666666]">
           {helperText}
         </p>
       )}

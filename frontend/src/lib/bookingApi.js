@@ -48,6 +48,13 @@ export const bookingApi = {
   },
 
   /**
+   * Alias for getCustomerBookings.
+   */
+  async getMyBookings(params = {}) {
+    return this.getCustomerBookings(params);
+  },
+
+  /**
    * Cancel an active booking owned by the authenticated customer.
    * @param {number|string} bookingId
    * @returns {Promise<Object>} - Updated booking object

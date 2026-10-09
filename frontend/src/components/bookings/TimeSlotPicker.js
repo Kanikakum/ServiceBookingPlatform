@@ -11,7 +11,10 @@ export default function TimeSlotPicker({
 }) {
   if (!dateSelected) {
     return (
-      <div className="rounded-xl border border-dashed border-gray-200 bg-gray-50/50 p-6 text-center text-xs text-gray-500">
+      <div className="rounded-sm border border-dashed border-[#E5E5E5] bg-[#F7F7F7] p-6 text-center text-sm text-[#666666]">
+        <svg className="w-6 h-6 mx-auto mb-2 text-[#666666]" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
         Please select an appointment date above to view available time slots.
       </div>
     );
@@ -19,27 +22,29 @@ export default function TimeSlotPicker({
 
   if (isLoading) {
     return (
-      <div className="rounded-xl border border-gray-100 bg-gray-50/80 p-8 flex flex-col items-center justify-center">
+      <div className="rounded-sm border border-[#E5E5E5] bg-[#F7F7F7] p-8 flex flex-col items-center justify-center">
         <LoadingSpinner size="md" label="Checking time slot availability..." />
-        <p className="mt-3 text-xs text-gray-500 font-medium">Checking live schedule availability...</p>
+        <p className="mt-3 text-xs text-[#666666] font-medium">Checking live schedule availability...</p>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="rounded-xl bg-red-50 border border-red-200 p-4 text-xs text-red-700">
+      <div className="rounded-sm bg-[#F7F7F7] border border-[#111111] p-4 text-sm text-[#111111]">
         <p className="font-semibold">Unable to fetch available slots</p>
-        <p className="mt-1">{error}</p>
+        <p className="mt-1 text-[#666666]">{error}</p>
       </div>
     );
   }
 
   if (!slots || slots.length === 0) {
     return (
-      <div className="rounded-xl border border-amber-200 bg-amber-50/50 p-6 text-center text-xs text-amber-800">
-        <p className="font-semibold text-sm">No slots available on this date</p>
-        <p className="mt-1 text-gray-600">The service provider is fully booked or outside standard operating hours for this date. Please try choosing another day.</p>
+      <div className="rounded-sm border border-[#E5E5E5] bg-[#F7F7F7] p-6 text-center">
+        <p className="font-semibold text-sm text-[#111111]">No slots available on this date</p>
+        <p className="mt-1 text-xs text-[#666666]">
+          The service provider is fully booked or outside standard operating hours for this date. Please try choosing another day.
+        </p>
       </div>
     );
   }
@@ -49,10 +54,10 @@ export default function TimeSlotPicker({
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between">
-        <label className="block text-sm font-semibold text-gray-900">
-          2. Select Time Slot <span className="text-red-500">*</span>
+        <label className="block text-sm font-semibold text-[#111111]">
+          2. Select Time Slot <span className="text-[#666666]" aria-hidden="true">*</span>
         </label>
-        <span className="text-xs text-gray-500 font-medium">
+        <span className="text-xs text-[#666666] font-medium">
           {availableCount} of {slots.length} slots available
         </span>
       </div>
@@ -74,12 +79,14 @@ export default function TimeSlotPicker({
               aria-checked={isSelected}
               disabled={!isAvailable}
               onClick={() => onSlotSelect(slot)}
-              className={`p-3 rounded-xl border text-center transition-all duration-150 relative select-none cursor-pointer disabled:cursor-not-allowed ${
+              className={`p-3 rounded-sm border text-center transition-all duration-150 relative select-none ${
+                isAvailable ? 'cursor-pointer' : 'cursor-not-allowed'
+              } ${
                 isSelected
-                  ? 'bg-indigo-600 border-indigo-600 text-white ring-2 ring-indigo-500/30 shadow-xs'
+                  ? 'bg-[#111111] border-[#111111] text-white ring-1 ring-[#111111]'
                   : isAvailable
-                  ? 'bg-white border-gray-200 text-gray-900 hover:border-indigo-400 hover:bg-indigo-50/40 shadow-2xs'
-                  : 'bg-gray-50 border-gray-200 text-gray-400 opacity-60'
+                  ? 'bg-white border-[#E5E5E5] text-[#111111] hover:border-[#111111] hover:bg-[#F7F7F7]'
+                  : 'bg-[#F7F7F7] border-[#E5E5E5] text-[#666666] opacity-60'
               }`}
             >
               <div className="text-sm font-bold tracking-tight">
@@ -88,10 +95,10 @@ export default function TimeSlotPicker({
               <span
                 className={`block text-[10px] mt-1 font-semibold uppercase tracking-wider ${
                   isSelected
-                    ? 'text-indigo-100'
+                    ? 'text-gray-300'
                     : isAvailable
-                    ? 'text-emerald-600'
-                    : 'text-gray-400'
+                    ? 'text-[#666666]'
+                    : 'text-[#666666]'
                 }`}
               >
                 {isSelected ? '✓ Selected' : isAvailable ? 'Available' : 'Booked'}

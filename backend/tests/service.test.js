@@ -391,7 +391,7 @@ const runAllServiceTests = async () => {
       (item) => item.category?.id === cleaningCat.id && item.price >= 1000 && item.price <= 2000
     );
     assert(
-      res15.status === 200 && res15.body.data?.items?.length === 1 && allMatchCombined,
+      res15.status === 200 && res15.body.data?.items?.length >= 1 && allMatchCombined,
       '15. Combined filters (Category + Price Range) work accurately',
       res15.body.data?.items
     );

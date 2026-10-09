@@ -3,6 +3,7 @@ import LoadingSpinner from './LoadingSpinner';
 
 /**
  * Reusable, accessible button supporting multiple variants, sizes, and loading states.
+ * Minimalist Black & White design system with 1px border-radius.
  */
 export default function Button({
   children,
@@ -16,25 +17,25 @@ export default function Button({
   ...props
 }) {
   const baseClasses =
-    'inline-flex items-center justify-center font-medium rounded-lg transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer select-none';
+    'inline-flex items-center justify-center font-medium rounded-[2px] transition-all duration-150 focus:outline-none focus-visible:ring-1 focus-visible:ring-black disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer select-none';
 
   const variantClasses = {
     primary:
-      'bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm hover:shadow focus:ring-indigo-500 active:bg-indigo-800',
+      'bg-[#111111] hover:bg-black text-white active:bg-black border border-[#111111]',
     secondary:
-      'bg-gray-100 hover:bg-gray-200 text-gray-800 focus:ring-gray-400 active:bg-gray-300',
+      'bg-[#F7F7F7] hover:bg-[#E5E5E5] text-[#111111] active:bg-[#E5E5E5] border border-[#E5E5E5]',
     outline:
-      'border border-gray-300 bg-white hover:bg-gray-50 text-gray-700 focus:ring-indigo-500 shadow-sm',
+      'border border-[#E5E5E5] bg-white hover:bg-[#F7F7F7] text-[#111111] hover:border-[#1F1F1F]',
     danger:
-      'bg-red-600 hover:bg-red-700 text-white shadow-sm hover:shadow focus:ring-red-500 active:bg-red-800',
+      'border border-[#1F1F1F] bg-[#1F1F1F] hover:bg-black text-white active:bg-black',
     ghost:
-      'bg-transparent hover:bg-gray-100 text-gray-600 hover:text-gray-900 focus:ring-gray-300',
+      'bg-transparent hover:bg-[#F7F7F7] text-[#666666] hover:text-[#111111] border border-transparent',
   };
 
   const sizeClasses = {
     sm: 'px-3 py-1.5 text-xs',
-    md: 'px-4 py-2.5 text-sm',
-    lg: 'px-6 py-3 text-base',
+    md: 'px-4 py-2 text-sm',
+    lg: 'px-6 py-2.5 text-base',
   };
 
   return (
@@ -51,7 +52,7 @@ export default function Button({
         <>
           <LoadingSpinner
             size="sm"
-            color={variant === 'primary' || variant === 'danger' ? 'white' : 'primary'}
+            color={variant === 'primary' || variant === 'danger' ? 'white' : 'dark'}
             className="mr-2"
           />
           <span>{children}</span>
