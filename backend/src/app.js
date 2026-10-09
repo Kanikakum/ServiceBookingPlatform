@@ -8,9 +8,11 @@ const notFoundHandler = require('./middleware/notFoundHandler');
 const app = express();
 
 // Security and utility middleware
-const allowedOrigins = typeof config.corsOrigin === 'string' && config.corsOrigin.includes(',')
-  ? config.corsOrigin.split(',').map((origin) => origin.trim())
-  : config.corsOrigin;
+
+const allowedOrigins = [
+  'http://localhost:3000',
+  'https://service-booking-platform-q9rj8jax4-kanikakums-projects.vercel.app',
+];
 
 app.use(
   cors({
