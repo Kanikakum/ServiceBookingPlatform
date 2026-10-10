@@ -11,15 +11,23 @@ const app = express();
 
 const allowedOrigins = [
   'http://localhost:3000',
-  'https://service-booking-platform-q9rj8jax4-kanikakums-projects.vercel.app',
+  'https://service-booking-platform-gilt.vercel.app',
+  'https://service-booking-platform-q9rj8jax4-kanikakumams-projects.vercel.app',
 ];
 
 app.use(
   cors({
-    origin: allowedOrigins,
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      return callback(new Error(`CORS blocked origin: ${origin}`));
+    },
     credentials: true,
   })
 );
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
