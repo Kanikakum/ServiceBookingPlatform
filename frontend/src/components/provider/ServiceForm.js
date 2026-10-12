@@ -10,6 +10,15 @@ import Button from '../common/Button';
 import ErrorMessage from '../common/ErrorMessage';
 import LoadingSpinner from '../common/LoadingSpinner';
 
+const DEFAULT_CATEGORIES = [
+  { id: 1, name: 'Home Cleaning' },
+  { id: 2, name: 'Plumbing' },
+  { id: 3, name: 'Electrical Repair' },
+  { id: 4, name: 'Painting & Renovation' },
+  { id: 5, name: 'Appliance Repair' },
+  { id: 6, name: 'Pest Control' },
+];
+
 export default function ServiceForm({ initialData = null, isEdit = false }) {
   const router = useRouter();
 
@@ -29,25 +38,49 @@ export default function ServiceForm({ initialData = null, isEdit = false }) {
   const [fieldErrors, setFieldErrors] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Load categories
+  // Load categories with unwrapping & fallback protection
   useEffect(() => {
     let isMounted = true;
     const fetchCats = async () => {
       try {
-        const catList = await providerApi.getCategories();
-        if (isMounted && Array.isArray(catList)) {
-          setCategories(catList);
-          // If creating and no category chosen yet, default to first category
-          if (!isEdit && catList.length > 0) {
-            setFormData((prev) => (prev.categoryId ? prev : { ...prev, categoryId: catList[0].id.toString() }));
+        const response = await providerApi.getCategories();
+
+        // Safely extract the array whether direct or wrapped in an object
+        let list = [];
+        if (Array.isArray(response)) {
+          list = response;
+        } else if (response && Array.isArray(response.categories)) {
+          list = response.categories;
+        } else if (response && Array.isArray(response.items)) {
+          list = response.items;
+        } else if (response && Array.isArray(response.data)) {
+          list = response.data;
+        }
+
+        // If backend returned empty or non-array, fall back to default categories
+        if (!list || list.length === 0) {
+          list = DEFAULT_CATEGORIES;
+        }
+
+        if (isMounted) {
+          setCategories(list);
+          if (!isEdit) {
+            setFormData((prev) => (prev.categoryId ? prev : { ...prev, categoryId: list[0].id.toString() }));
           }
         }
       } catch (err) {
-        console.error('Failed to load categories:', err);
+        console.warn('Failed to load categories from API, falling back to defaults:', err);
+        if (isMounted) {
+          setCategories(DEFAULT_CATEGORIES);
+          if (!isEdit) {
+            setFormData((prev) => (prev.categoryId ? prev : { ...prev, categoryId: DEFAULT_CATEGORIES[0].id.toString() }));
+          }
+        }
       } finally {
         if (isMounted) setIsLoadingCategories(false);
       }
     };
+
     fetchCats();
     return () => {
       isMounted = false;
@@ -196,7 +229,7 @@ export default function ServiceForm({ initialData = null, isEdit = false }) {
           </option>
           {categories.map((cat) => (
             <option key={cat.id} value={cat.id}>
-              {cat.name}
+              {cat.name || cat.title || cat.label}
             </option>
           ))}
         </select>
